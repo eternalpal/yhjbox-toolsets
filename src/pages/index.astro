@@ -1,0 +1,46 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/sections/Footer.astro';
+import Header from '../components/sections/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import HeroSection from '../components/sections/HeroSection.astro';
+import SkillsSection from '../components/sections/SkillsSection.astro';
+import { skills } from '../data/skills';
+import ArrowSeparator from '../components/ui/separator/ArrowSeparator.astro'
+
+// skills are imported from src/data/skills
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark" class="dark">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <!-- JSON-LD: Organization -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'Site Author',
+      url: new URL('/', Astro.site).toString(),
+      logo: new URL('/favicon.svg', Astro.site).toString(),
+      sameAs: [
+        'https://x.com/nikta2024',
+        'https://www.yhjbox.com/',
+      ],
+    })} />
+	</head>
+	<body>
+		<Header />
+		<main>
+      <HeroSection
+        title="Welcome to yhjbox toolset欢迎来到永恒君工具集"
+        subtitle="I build softwares that help work efficiently.日常提效工具"
+      />
+     
+
+    <section class="py-4">
+      <SkillsSection title="Tools" skills={skills} />
+    </section>
+		</main>
+		<Footer />
+	</body>
+</html>

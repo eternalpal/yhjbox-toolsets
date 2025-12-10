@@ -1,0 +1,724 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/sections/Footer.astro';
+import Header from '../components/sections/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="zh-CN" data-theme="dark" class="dark">
+	<head>
+		<BaseHead title={`Split PDF A3 to A4: Cut Pages in Half Vertically Online (Free)`} description="Easily split A3 PDF pages into two A4 pages online. Use our free tool to cut PDF pages in half vertically down the middle. No registration, no watermarks." />
+	</head>
+	<body>
+		<!-- SVG 图标定义集 (Sprite System) -->
+		<!-- 预定义图标以复用代码，减少HTML体积，提升可维护性 -->
+		<svg style="display: none;" aria-hidden="true">
+			<symbol id="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+			</symbol>
+			<symbol id="icon-plus" viewBox="0 0 20 20" fill="currentColor">
+				<path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
+			</symbol>
+			<symbol id="icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18-3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+			</symbol>
+			<symbol id="icon-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+			</symbol>
+			<symbol id="icon-logs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z" />
+			</symbol>
+			<symbol id="icon-play" viewBox="0 0 20 20" fill="currentColor">
+				<path d="M10 2a.75.75 0 0 1 .75.75v12.59l1.95-2.1a.75.75 0 1 1 1.1 1.02l-3.25 3.5a.75.75 0 0 0-1.1 0l-3.25-3.5a.75.75 0 1 1 1.1-1.02l1.95 2.1V2.75A.75.75 0 0 1 10 2Z" />
+			</symbol>
+			<symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+			</symbol>
+			<symbol id="icon-file" viewBox="0 0 20 20" fill="currentColor">
+				<path fill-rule="evenodd" d="M4.5 2A1.5 1.5 0 0 0 3 3.5v13A1.5 1.5 0 0 0 4.5 18h11a1.5 1.5 0 0 0 1.5-1.5V7.621a1.5 1.5 0 0 0-.44-1.06l-4.12-4.122A1.5 1.5 0 0 0 11.378 2H4.5Zm2.25 8.5a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5Zm0 3a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5Z" clip-rule="evenodd" />
+			</symbol>
+			<symbol id="icon-trash" viewBox="0 0 20 20" fill="currentColor">
+				<path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+			</symbol>
+			<symbol id="icon-spinner" viewBox="0 0 24 24" fill="none">
+				<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+				<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+			</symbol>
+		</svg>
+
+		<Header />
+		<main>
+			<section class="py-1 px-4">
+				<div class="max-w-4xl mx-auto">
+					<h1 class="text-3xl md:text-4xl font-bold text-center mb-8">A3 to 2 x A4 Splitter</h1>
+					<div class="card-surface p-8">
+				
+				<!-- 上传区域 -->
+				<div id="uploadSection" class="w-full transition-all duration-300 mb-6">
+					<div id="dropZone" role="button" tabindex="0" aria-label="点击或拖放上传PDF" class="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-10 cursor-pointer hover:border-primary dark:hover:border-primary hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-200 group flex flex-col items-center justify-center min-h-[280px]">
+						<div class="w-20 h-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-200">
+							<svg class="w-10 h-10"><use href="#icon-upload"></use></svg>
+						</div>
+						<h3 class="font-semibold text-xl mb-3">Click or drag to upload PDF</h3>
+						<p class="text-gray-500 text-base max-w-sm text-center leading-relaxed">
+							 Multiple files Supported
+						</p>
+						<input type="file" id="fileInput" multiple accept=".pdf" class="hidden">
+					</div>
+				</div>
+				
+				<!-- 文件列表区域 -->
+				<div id="filesSection" class="w-full hidden" aria-live="polite">
+					<div class="flex flex-col border border-gray-300 dark:border-gray-700 rounded-lg">
+						<!-- 列表头部 -->
+						<div class="flex justify-between items-center px-5 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 rounded-t-lg">
+							<div class="flex items-center gap-2">
+								<span class="flex h-2 w-2 rounded-full bg-green-500"></span>
+								<h5 class="font-medium text-sm">Pending Files</h5>
+							</div>
+							<div class="flex items-center gap-3">
+								<span id="fileCount" class="text-gray-500 text-xs font-mono bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded">0</span>
+								<button id="clearBtn" aria-label="Clear" class="text-xs text-red-500 hover:text-red-600 transition-colors flex items-center gap-1 cursor-pointer">
+									Clear
+								</button>
+							</div>
+						</div>
+						
+						<!-- 文件列表容器 -->
+						<div id="fileListContainer" class="max-h-[180px] overflow-y-auto custom-scrollbar p-3 space-y-2 bg-white dark:bg-gray-800/30">
+							<ul id="fileList" class="space-y-2">
+								<!-- JS将在这里注入内容 -->
+							</ul>
+						</div>
+						
+						<!-- 底部操作栏 -->
+						<button id="addMore" class="w-full p-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/30 rounded-b-lg flex justify-center cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group">
+							<span class="text-primary text-sm font-medium flex items-center gap-2">
+								<svg class="w-4 h-4"><use href="#icon-plus"></use></svg>
+								继续添加文件
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 操作按钮区域 -->
+			<div class="w-full max-w-4xl mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+				<div class="flex gap-6 w-full sm:w-auto">
+					<button id="helpBtn" aria-haspopup="dialog" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors">
+						<svg class="w-4 h-4"><use href="#icon-book"></use></svg>
+						Instructions
+					</button>
+					<button id="settingsBtn" aria-haspopup="dialog" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors">
+						<svg class="w-4 h-4"><use href="#icon-settings"></use></svg>
+						Settings
+					</button>
+					<button id="logsBtn" aria-haspopup="dialog" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors">
+						<svg class="w-4 h-4"><use href="#icon-logs"></use></svg>
+						Logs
+					</button>
+				</div>
+				
+				<button id="startBtn" class="w-full sm:w-auto flex-1 flex items-center justify-center gap-2 px-10 py-3 bg-primary text-white rounded-lg text-sm font-bold hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-lg shadow-primary/20">
+					<svg class="w-4 h-4"><use href="#icon-play"></use></svg>
+					Start
+				</button>
+			</div>
+		</div>
+		</main>
+		
+		<!-- 模态框背景 -->
+		<div id="modalOverlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center transition-opacity duration-300 opacity-0" aria-hidden="true">
+			
+			<!-- 设置模态框 -->
+			<div id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4 hidden transform transition-all duration-300 scale-95 border border-slate-200 dark:border-slate-700 modal-content">
+				<div class="flex justify-between items-center mb-6">
+					<h2 id="settingsTitle" class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+						<span class="text-indigo-500">⚙️</span> Settings
+					</h2>
+					<button class="close-modal-btn text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-primary">
+						<svg class="w-5 h-5"><use href="#icon-close"></use></svg>
+					</button>
+				</div>
+				<div class="space-y-6">
+					<!-- 水印阈值 -->
+					<div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl">
+						<div class="flex justify-between items-center mb-3">
+							<label class="font-medium text-slate-700 dark:text-slate-300 text-sm">水印过滤阈值</label>
+							<input type="number" id="thresholdNum" value="220" min="150" max="250" class="w-16 p-1 px-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded text-center text-sm font-mono focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none">
+						</div>
+						<input type="range" id="thresholdRange" min="150" max="250" value="220" class="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer slider-thumb">
+						<p class="text-slate-400 text-xs mt-2">水印颜色越深，此数值越要调低。数值越低过滤越强，但可能误伤文字。</p>
+					</div>
+					
+					<!-- 分割范围 -->
+					<div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl">
+						<label class="font-medium text-slate-700 dark:text-slate-300 block mb-3 text-sm">中缝搜索范围 (%)</label>
+						<div class="flex items-center gap-3">
+							<input type="number" id="scanMin" value="30" min="0" max="100" aria-label="搜索起始百分比" class="flex-1 p-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded text-center text-sm font-mono focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none">
+							<span class="text-slate-400 text-xs">至</span>
+							<input type="number" id="scanMax" value="70" min="0" max="100" aria-label="搜索结束百分比" class="flex-1 p-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded text-center text-sm font-mono focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none">
+						</div>
+						<p class="text-slate-400 text-xs mt-2">只在此范围内寻找中缝，避开边缘笔记。</p>
+					</div>
+					
+					<!-- 忽略范围 -->
+					<div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl">
+						<label class="font-medium text-slate-700 dark:text-slate-300 block mb-3 text-sm">上下忽略范围 (%)</label>
+						<div class="grid grid-cols-2 gap-3">
+							<div>
+								<label class="text-slate-400 text-xs block mb-1">顶部忽略</label>
+								<input type="number" id="ignoreTop" value="15" min="0" max="100" class="w-full p-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded text-center text-sm font-mono focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none">
+							</div>
+							<div>
+								<label class="text-slate-400 text-xs block mb-1">底部忽略</label>
+								<input type="number" id="ignoreBottom" value="15" min="0" max="100" class="w-full p-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded text-center text-sm font-mono focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none">
+							</div>
+							<p class="text-slate-400 text-xs mt-2">忽略页眉和页脚，防止干扰。</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 使用说明模态框 -->
+			<div id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle" class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4 hidden transform transition-all duration-300 scale-95 border border-slate-200 dark:border-slate-700 modal-content">
+				<div class="flex justify-between items-center mb-6">
+					<h2 id="helpTitle" class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+						<span class="text-indigo-500">📖</span> 使用说明
+					</h2>
+					<button class="close-modal-btn text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-primary">
+						<svg class="w-5 h-5"><use href="#icon-close"></use></svg>
+					</button>
+				</div>
+				<div class="space-y-4">
+					<div class="flex gap-4 items-start p-3 rounded-lg bg-slate-50 dark:bg-slate-900/50">
+						<span class="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400 font-bold text-sm flex items-center justify-center mt-0.5">1</span>
+						<p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">点击上传区域或直接将 PDF 文件拖入框内（支持多选）。</p>
+					</div>
+					<div class="flex gap-4 items-start p-3 rounded-lg bg-slate-50 dark:bg-slate-900/50">
+						<span class="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400 font-bold text-sm flex items-center justify-center mt-0.5">2</span>
+						<p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">在文件列表中确认文件，如有需要可在"设置"中调整切分参数。</p>
+					</div>
+					<div class="flex gap-4 items-start p-3 rounded-lg bg-slate-50 dark:bg-slate-900/50">
+						<span class="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400 font-bold text-sm flex items-center justify-center mt-0.5">3</span>
+						<p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">点击"开始处理"，完成后会自动下载处理好的 ZIP 压缩包。</p>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 处理日志模态框 -->
+			<div id="logsModal" role="dialog" aria-modal="true" aria-labelledby="logsTitle" class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4 hidden transform transition-all duration-300 scale-95 border border-slate-200 dark:border-slate-700 modal-content">
+				<div class="flex justify-between items-center mb-4">
+					<h2 id="logsTitle" class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+						<span class="text-indigo-500">📋</span> 处理日志
+					</h2>
+					<button class="close-modal-btn text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-primary">
+						<svg class="w-5 h-5"><use href="#icon-close"></use></svg>
+					</button>
+				</div>
+				<div class="bg-slate-950 text-slate-200 rounded-xl p-4 h-[300px] overflow-y-auto font-mono text-xs leading-relaxed border border-slate-800 shadow-inner" id="logArea">
+					<div class="text-slate-500 italic mb-2"># Ready...</div>
+				</div>
+			</div>
+		</div>
+		
+		<Footer />
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+		<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+		
+		<script>
+			// 等待 DOM 完全加载后执行
+			window.addEventListener('DOMContentLoaded', function() {
+				// 依赖库检查
+				if (typeof pdfjsLib !== 'undefined') {
+					pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+				} else {
+					console.error('PDF.js 库未能正确加载，请检查网络连接。');
+					return;
+				}
+
+				// DOM 元素引用缓存
+				const elements = {
+					fileInput: document.getElementById('fileInput'),
+					fileList: document.getElementById('fileList'),
+					fileCount: document.getElementById('fileCount'),
+					startBtn: document.getElementById('startBtn'),
+					clearBtn: document.getElementById('clearBtn'),
+					addMoreBtn: document.getElementById('addMore'),
+					logArea: document.getElementById('logArea'),
+					dropZone: document.getElementById('dropZone'),
+					uploadSection: document.getElementById('uploadSection'),
+					filesSection: document.getElementById('filesSection'),
+					modalOverlay: document.getElementById('modalOverlay'),
+					fileListContainer: document.getElementById('fileListContainer'),
+					// 设置项输入框
+					thresholdNum: document.getElementById('thresholdNum'),
+					thresholdRange: document.getElementById('thresholdRange'),
+					scanMin: document.getElementById('scanMin'),
+					scanMax: document.getElementById('scanMax'),
+					ignoreTop: document.getElementById('ignoreTop'),
+					ignoreBottom: document.getElementById('ignoreBottom')
+				};
+
+				// 模态框映射表
+				const modalMap = {
+					'settingsBtn': document.getElementById('settingsModal'),
+					'helpBtn': document.getElementById('helpModal'),
+					'logsBtn': document.getElementById('logsModal')
+				};
+
+				let fileQueue = []; // 待处理文件队列
+				let lastFocusedElement = null; // 用于模态框关闭后恢复焦点
+
+				// 同步滑块和数字输入框的值
+				function syncInputValues(targetId, val) {
+					document.getElementById(targetId).value = val;
+				}
+				
+				elements.thresholdNum.addEventListener('change', e => syncInputValues('thresholdRange', e.target.value));
+				elements.thresholdRange.addEventListener('input', e => syncInputValues('thresholdNum', e.target.value));
+
+				// 日志输出函数
+				function log(msg, type = 'info') {
+					const div = document.createElement('div');
+					div.className = `log-entry py-1 border-b border-slate-800/50 ${type === 'error' ? 'text-red-400' : type === 'success' ? 'text-green-400' : 'text-slate-300'}`;
+					const time = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+					div.innerHTML = `<span class="opacity-50 mr-2">[${time}]</span>${msg}`;
+					elements.logArea.appendChild(div);
+					elements.logArea.scrollTop = elements.logArea.scrollHeight;
+				}
+
+				// 切换主界面显示状态（上传页/列表页）
+				function toggleMainContent(hasFiles) {
+					if (hasFiles) {
+						elements.uploadSection.classList.add('hidden');
+						elements.filesSection.classList.remove('hidden');
+					} else {
+						elements.uploadSection.classList.remove('hidden');
+						elements.filesSection.classList.add('hidden');
+					}
+				}
+
+				// --- 无障碍模态框逻辑 ---
+				
+				function openModal(modalId) {
+					const modal = modalMap[modalId] || (typeof modalId === 'string' ? document.getElementById(modalId) : modalId);
+					if (!modal) return;
+					
+					lastFocusedElement = document.activeElement;
+					
+					elements.modalOverlay.classList.remove('hidden');
+					elements.modalOverlay.style.display = 'flex';
+					void elements.modalOverlay.offsetWidth; // 触发重绘
+					elements.modalOverlay.classList.remove('opacity-0');
+					
+					modal.classList.remove('hidden');
+					modal.style.display = 'block';
+					setTimeout(() => {
+						modal.classList.remove('scale-95');
+						modal.classList.add('scale-100');
+						// 焦点捕获：将焦点移至模态框内第一个可交互元素
+						const focusableContent = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+						if (focusableContent.length) {
+							focusableContent[0].focus();
+						}
+					}, 10);
+				}
+
+				function closeModal(modal) {
+					if (!modal) return;
+					modal.classList.remove('scale-100');
+					modal.classList.add('scale-95');
+					elements.modalOverlay.classList.add('opacity-0');
+					
+					setTimeout(() => {
+						modal.classList.add('hidden');
+						modal.style.display = 'none';
+						elements.modalOverlay.classList.add('hidden');
+						elements.modalOverlay.style.display = 'none';
+						if (lastFocusedElement) lastFocusedElement.focus();
+					}, 300);
+				}
+
+				// 绑定模态框触发按钮事件
+				Object.keys(modalMap).forEach(btnId => {
+					document.getElementById(btnId).addEventListener('click', () => openModal(btnId));
+				});
+
+				// 绑定关闭按钮事件
+				document.querySelectorAll('.close-modal-btn').forEach(btn => {
+					btn.addEventListener('click', (e) => {
+						const modal = e.target.closest('.modal-content');
+						closeModal(modal);
+					});
+				});
+
+				// 点击遮罩层关闭
+				elements.modalOverlay.addEventListener('click', (e) => {
+					if (e.target === elements.modalOverlay) {
+						document.querySelectorAll('.modal-content:not(.hidden)').forEach(closeModal);
+					}
+				});
+
+				// ESC 键关闭
+				document.addEventListener('keydown', (e) => {
+					if (e.key === 'Escape') {
+						document.querySelectorAll('.modal-content:not(.hidden)').forEach(closeModal);
+					}
+				});
+
+				// --- 文件处理逻辑 ---
+
+				function handleFiles(files) {
+					const newFiles = Array.from(files).filter(f => f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf'));
+					if(newFiles.length === 0) {
+						if(files.length > 0) log('请选择 PDF 文件', 'error');
+						return;
+					}
+					
+					newFiles.forEach(f => {
+						// 避免重复添加完全相同的文件
+						if(!fileQueue.some(ex => ex.name === f.name && ex.size === f.size)) {
+							fileQueue.push(f);
+						}
+					});
+					
+					renderFileList();
+					
+					if (fileQueue.length > 0) {
+						toggleMainContent(true);
+					}
+				}
+
+				function renderFileList() {
+					elements.fileCount.textContent = `${fileQueue.length}`;
+					
+					if (fileQueue.length === 0) {
+						elements.fileList.innerHTML = '';
+						return;
+					}
+					
+					// 使用 data 属性代替 onclick，避免内联 JS
+					elements.fileList.innerHTML = fileQueue.map((file, idx) => `
+						<li class="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-2.5 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-between gap-3 animate-fadeIn">
+							<div class="flex items-center gap-3 overflow-hidden">
+								<div class="w-9 h-9 rounded-lg bg-rose-50 dark:bg-rose-900/30 text-rose-500 dark:text-rose-400 flex items-center justify-center flex-shrink-0">
+									<svg class="w-4 h-4"><use href="#icon-file"></use></svg>
+								</div>
+								<div class="min-w-0">
+									<div class="font-medium text-slate-700 dark:text-slate-200 text-sm truncate" title="${file.name}">${file.name}</div>
+									<div class="text-slate-400 dark:text-slate-500 text-xs flex items-center gap-2">
+										<span>${(file.size / 1024 / 1024).toFixed(2)} MB</span>
+										<span class="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600"></span>
+										<span class="text-indigo-500">等待处理</span>
+									</div>
+								</div>
+							</div>
+							<button data-action="remove" data-index="${idx}" aria-label="移除 ${file.name}" class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+								<svg class="w-4 h-4 pointer-events-none"><use href="#icon-trash"></use></svg>
+							</button>
+						</li>
+					`).join('');
+					
+					elements.fileListContainer.scrollTop = elements.fileListContainer.scrollHeight;
+				}
+
+				// 使用事件委托处理文件移除，替代 window.removeFile
+				elements.fileList.addEventListener('click', (e) => {
+					const btn = e.target.closest('button[data-action="remove"]');
+					if (btn) {
+						const idx = parseInt(btn.dataset.index);
+						fileQueue.splice(idx, 1);
+						renderFileList();
+						if (fileQueue.length === 0) {
+							toggleMainContent(false);
+						}
+					}
+				});
+
+				elements.clearBtn.addEventListener('click', () => {
+					if (fileQueue.length > 0) {
+						fileQueue = [];
+						renderFileList();
+						log('File list clear', 'info');
+						toggleMainContent(false);
+					}
+				});
+
+				elements.addMoreBtn.addEventListener('click', () => elements.fileInput.click());
+				
+				elements.fileInput.addEventListener('change', (e) => {
+					handleFiles(e.target.files);
+					elements.fileInput.value = '';
+				});
+
+				// 拖拽上传支持
+				['dragover', 'dragleave', 'drop'].forEach(eventName => {
+					elements.dropZone.addEventListener(eventName, (e) => e.preventDefault());
+				});
+
+				elements.dropZone.addEventListener('dragover', () => elements.dropZone.classList.add('border-indigo-500', 'bg-indigo-50', 'dark:bg-indigo-900/20'));
+				elements.dropZone.addEventListener('dragleave', () => elements.dropZone.classList.remove('border-indigo-500', 'bg-indigo-50', 'dark:bg-indigo-900/20'));
+				elements.dropZone.addEventListener('drop', (e) => {
+					elements.dropZone.classList.remove('border-indigo-500', 'bg-indigo-50', 'dark:bg-indigo-900/20');
+					handleFiles(e.dataTransfer.files);
+				});
+				elements.dropZone.addEventListener('click', () => elements.fileInput.click());
+				
+				// 键盘支持
+				elements.dropZone.addEventListener('keydown', (e) => {
+					if(e.key === 'Enter' || e.key === ' ') {
+						e.preventDefault();
+						elements.fileInput.click();
+					}
+				});
+
+				// --- 核心处理逻辑 ---
+
+				elements.startBtn.addEventListener('click', async () => {
+					if (fileQueue.length === 0) return;
+					
+					// 获取当前配置
+					const config = {
+						threshold: parseInt(elements.thresholdNum.value),
+						scanMin: parseInt(elements.scanMin.value) / 100,
+						scanMax: parseInt(elements.scanMax.value) / 100,
+						ignoreTop: parseInt(elements.ignoreTop.value) / 100,
+						ignoreBottom: parseInt(elements.ignoreBottom.value) / 100
+					};
+					
+					// UI 状态更新
+					elements.startBtn.disabled = true;
+					elements.startBtn.innerHTML = `<svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"><use href="#icon-spinner"></use></svg>Processing...`;
+					
+					openModal('logsModal');
+					
+					try {
+						await processFiles(fileQueue, config);
+					} catch (e) {
+						log(`错误: ${e.message}`, 'error');
+					} finally {
+						elements.startBtn.disabled = false;
+						elements.startBtn.innerHTML = `<svg class="w-4 h-4 mr-2"><use href="#icon-play"></use></svg>Start`;
+					}
+				});
+
+				/**
+				 * 计算中缝位置比例
+				 * @param {CanvasRenderingContext2D} ctx - Canvas 上下文
+				 * @param {number} width - 页面宽度
+				 * @param {number} height - 页面高度
+				 * @param {Object} cfg - 配置对象
+				 */
+				function findSplitRatio(ctx, width, height, cfg) {
+					// 提示：willReadFrequently 属性在创建 Context 时已设置，此处直接调用
+					const data = ctx.getImageData(0, 0, width, height).data;
+					const xStart = Math.floor(width * cfg.scanMin);
+					const xEnd = Math.floor(width * cfg.scanMax);
+					const yStart = Math.floor(height * cfg.ignoreTop);
+					const yEnd = Math.floor(height * (1 - cfg.ignoreBottom));
+					
+					const checkRange = xEnd - xStart;
+					const gaps = new Uint8Array(checkRange);
+					
+					// 逐列扫描白色像素比例
+					for(let x = 0; x < checkRange; x++) {
+						const currentX = xStart + x;
+						let white = 0, total = 0;
+						for(let y = yStart; y < yEnd; y++) {
+							const i = (y * width + currentX) * 4;
+							// 计算 RGB 平均值判断是否为白色
+							if (((data[i] + data[i+1] + data[i+2]) / 3) > cfg.threshold) white++;
+							total++;
+						}
+						// 如果一列中 98% 以上是白色，标记为中缝候选
+						if ((white / total) > 0.98) gaps[x] = 1; 
+					}
+
+					// 寻找最长连续白色区域
+					let maxLen = 0, maxStart = 0, curStart = -1;
+					for(let i = 0; i < checkRange; i++) {
+						if(gaps[i] === 1) { 
+							if(curStart === -1) curStart = i; 
+						}
+						else if(curStart !== -1) {
+							if(i - curStart > maxLen) { 
+								maxLen = i - curStart; 
+								maxStart = curStart; 
+							}
+							curStart = -1;
+						}
+					}
+					// 处理边缘情况
+					if(curStart !== -1 && checkRange - curStart > maxLen) { 
+						maxLen = checkRange - curStart; 
+						maxStart = curStart; 
+					}
+					
+					// 未找到则默认从中间切分
+					return maxLen === 0 ? 0.5 : (xStart + maxStart + maxLen/2) / width;
+				}
+				
+				/**
+				 * 处理文件队列
+				 * 优化说明：使用单例 Canvas，避免内存泄漏；及时释放 PDF 资源
+				 */
+				async function processFiles(files, config) {
+					log('开始处理文件...', 'info');
+					
+					const zip = new JSZip();
+					let successCount = 0;
+
+					// 创建共享 Canvas，减少 DOM 操作和内存分配
+					const sharedCanvas = document.createElement('canvas');
+					// willReadFrequently: true 提示浏览器优化 getImageData 读取性能
+					const ctx = sharedCanvas.getContext('2d', { willReadFrequently: true });
+
+					try {
+						for (let i = 0; i < files.length; i++) {
+							const file = files[i];
+							log(`正在分析: ${file.name}`);
+							let loadingTask = null;
+							
+							try {
+								const arrayBuffer = await file.arrayBuffer();
+								
+								// 1. 加载 PDF 文档 (pdf-lib)
+								const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+								const newPdfDoc = await PDFLib.PDFDocument.create();
+								
+								// 2. 加载 PDF 解析任务 (pdf.js)
+								loadingTask = pdfjsLib.getDocument({data: arrayBuffer});
+								const pdfAnalysis = await loadingTask.promise;
+								const pageCount = pdfDoc.getPageCount();
+
+								for (let p = 0; p < pageCount; p++) {
+									const page = await pdfAnalysis.getPage(p + 1);
+									
+									const viewport = page.getViewport({scale: 0.5});
+									
+									// 动态调整 Canvas 尺寸（会自动清空内容）
+									if (sharedCanvas.width !== viewport.width || sharedCanvas.height !== viewport.height) {
+										sharedCanvas.width = viewport.width;
+										sharedCanvas.height = viewport.height;
+									}
+
+									// 渲染页面到 Canvas
+									await page.render({
+										canvasContext: ctx, 
+										viewport: viewport
+									}).promise;
+									
+									// 计算切分点
+									const splitRatio = findSplitRatio(ctx, sharedCanvas.width, sharedCanvas.height, config);
+									
+									// 显式清理页面资源
+									page.cleanup();
+
+									// 执行切分 (pdf-lib)
+									const [orig] = await newPdfDoc.copyPages(pdfDoc, [p]);
+									const { width, height } = orig.getSize();
+									const splitX = width * splitRatio;
+
+									// 添加左页
+									const leftP = await newPdfDoc.addPage(orig);
+									leftP.setCropBox(0, 0, splitX, height);
+									
+									// 添加右页 (需重新拷贝以获得独立引用)
+									const [rightRaw] = await newPdfDoc.copyPages(pdfDoc, [p]);
+									const rightP = await newPdfDoc.addPage(rightRaw);
+									rightP.setCropBox(splitX, 0, width - splitX, height);
+								}
+								
+								const newBytes = await newPdfDoc.save();
+								zip.file(file.name.replace(/\.pdf$/i, '') + '_A4版.pdf', newBytes);
+								successCount++;
+								log(`✅ 完成`, 'success');
+
+							} catch (err) {
+								log(`❌ 失败: ${err.message}`, 'error');
+								console.error(err);
+							} finally {
+								// 关键：销毁 PDF.js 任务对象以释放内存
+								if (loadingTask) {
+									await loadingTask.destroy();
+								}
+							}
+						}
+						
+						// 处理完成后缩小 Canvas 占用
+						sharedCanvas.width = 1;
+						sharedCanvas.height = 1;
+
+						if(successCount > 0) {
+							log(`正在打包下载...`, 'success');
+							const content = await zip.generateAsync({type:"blob"});
+							const downloadUrl = URL.createObjectURL(content);
+							const downloadLink = document.createElement('a');
+							downloadLink.href = downloadUrl;
+							downloadLink.download = "A3智能切分A4结果.zip";
+							document.body.appendChild(downloadLink);
+							downloadLink.click();
+							document.body.removeChild(downloadLink);
+							// 延迟释放 URL 对象，确保下载触发
+							setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+						}
+					} catch (e) { 
+						log(`系统严重错误: ${e.message}`, 'error'); 
+					} finally {
+						log(`处理结束！共成功处理 ${successCount} 个文件`, 'success');
+					}
+				}
+			});
+		</script>
+		
+		<style>
+			/* 滑块样式优化 */
+			.slider-thumb::-webkit-slider-thumb {
+				appearance: none;
+				height: 1.25rem;
+				width: 1.25rem;
+				border-radius: 50%;
+				background: #4f46e5;
+				cursor: pointer;
+				box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+				transition: all 0.2s ease;
+			}
+			
+			.slider-thumb::-webkit-slider-thumb:hover {
+				transform: scale(1.1);
+				box-shadow: 0 0 0 6px rgba(79, 70, 229, 0.2);
+			}
+			
+			/* 自定义滚动条 */
+			.custom-scrollbar::-webkit-scrollbar {
+				width: 4px;
+			}
+			.custom-scrollbar::-webkit-scrollbar-track {
+				background: transparent;
+			}
+			.custom-scrollbar::-webkit-scrollbar-thumb {
+				background-color: rgba(148, 163, 184, 0.3);
+				border-radius: 2px;
+			}
+			.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+				background-color: rgba(71, 85, 105, 0.5);
+			}
+			.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+				background-color: rgba(148, 163, 184, 0.5);
+			}
+			
+			/* 动画定义 */
+			@keyframes fadeIn {
+				from { opacity: 0; transform: translateY(5px); }
+				to { opacity: 1; transform: translateY(0); }
+			}
+			.animate-fadeIn {
+				animation: fadeIn 0.3s ease-out forwards;
+			}
+		</style>
+	</body>
+</html>
