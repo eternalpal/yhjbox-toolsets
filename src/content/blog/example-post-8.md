@@ -5,6 +5,7 @@ pubDate: 'Aug 08 2025'
 heroImage: '../../assets/images/example-blog-hero8.jpg'
 category: 'Showcase'
 tags: ['template']
+featured: true
 ---
 
 Done! You now have eight example posts mapped to the eight hero images.
