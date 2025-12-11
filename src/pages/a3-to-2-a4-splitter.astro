@@ -43,6 +43,18 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 				<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
 				<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
 			</symbol>
+			<symbol id="icon-features" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+			</symbol>
+			<symbol id="icon-usecases" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+			</symbol>
+			<symbol id="icon-cta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+			</symbol>
+			<symbol id="icon-faq" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+			</symbol>
 		</svg>
 
 		<Header />
@@ -123,6 +135,123 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 			</div>
 		</div>
 		</main>
+		
+		<!-- Additional Information Section -->
+		<section class="py-16 px-4 bg-slate-50 dark:bg-slate-900/30">
+			<div class="max-w-4xl mx-auto">
+				<!-- Features Section -->
+				<div class="mb-12">
+					<h2 class="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100 flex items-center justify-center gap-3">
+					✅Features
+					</h2>
+					<div class="grid md:grid-cols-2 gap-6">
+						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+							<ul class="space-y-3 text-slate-600 dark:text-slate-300">
+								<li class="flex items-start gap-3">
+									<span class="text-green-500 mt-1">✓</span>
+									<span>Split PDF pages in half vertically</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<span class="text-green-500 mt-1">✓</span>
+									<span>A3 to 2×A4 in seconds</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<span class="text-green-500 mt-1">✓</span>
+									<span>No signup, no watermark</span>
+								</li>
+							</ul>
+						</div>
+						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+							<ul class="space-y-3 text-slate-600 dark:text-slate-300">
+								<li class="flex items-start gap-3">
+									<span class="text-green-500 mt-1">✓</span>
+									<span>Works on Windows, macOS, and mobile</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<span class="text-green-500 mt-1">✓</span>
+									<span>Safe & privacy-friendly</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				
+				<hr class="my-12 border-slate-200 dark:border-slate-700">
+				
+				<!-- Use Cases Section -->
+				<div class="mb-12">
+					<h2 class="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">✅ Use Cases</h2>
+					<div class="text-center mb-6">
+						<p class="text-lg text-slate-600 dark:text-slate-300 font-medium">Perfect for:</p>
+					</div>
+					<div class="grid md:grid-cols-2 gap-6">
+						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+							<ul class="space-y-3 text-slate-600 dark:text-slate-300">
+								<li class="flex items-start gap-3">
+									<span class="text-blue-500 mt-1">•</span>
+									<span>Printing A3 PDFs on A4 paper</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<span class="text-blue-500 mt-1">•</span>
+									<span>Student exam papers</span>
+								</li>
+							</ul>
+						</div>
+						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+							<ul class="space-y-3 text-slate-600 dark:text-slate-300">
+								<li class="flex items-start gap-3">
+									<span class="text-blue-500 mt-1">•</span>
+									<span>Scanned A3 documents</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<span class="text-blue-500 mt-1">•</span>
+									<span>Wide layouts and drawings</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				
+				<hr class="my-12 border-slate-200 dark:border-slate-700">
+				
+				<!-- CTA Section -->
+				<div class="text-center mb-12">
+					<h2 class="text-2xl font-bold mb-4 text-slate-800 dark:text-slate-100">✅ CTA</h2>
+					<div class="bg-gradient-to-r from-primary to-blue-600 rounded-2xl p-8 shadow-lg">
+						<h3 class="text-3xl font-bold text-white mb-4">Split A3 to A4 Now — Free</h3>
+						<p class="text-blue-100 text-lg mb-6">Start splitting your A3 PDFs into perfect A4 pages instantly</p>
+						<button onclick="window.location.href = '#';" class="bg-white text-primary font-bold px-8 py-3 rounded-lg hover:bg-slate-100 transition-colors shadow-lg">
+							Start
+						</button>
+					</div>
+				</div>
+				
+				<hr class="my-12 border-slate-200 dark:border-slate-700">
+				
+				<!-- FAQ Section -->
+				<div>
+					<h2 class="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">✅ FAQ</h2>
+					<div class="space-y-6">
+						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">Can I split PDF A3 into two A4 pages vertically?</h3>
+							<p class="text-slate-600 dark:text-slate-300">Yes. Each A3 page is split down the middle into two A4 pages.</p>
+						</div>
+						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">Is this A3 to A4 splitter free?</h3>
+							<p class="text-slate-600 dark:text-slate-300">Yes. No registration and no watermark.</p>
+						</div>
+						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">Can I print the split A4 pages directly?</h3>
+							<p class="text-slate-600 dark:text-slate-300">Yes. The output file is ready for standard A4 printers.</p>
+						</div>
+						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">Does it work with scanned A3 PDFs?</h3>
+							<p class="text-slate-600 dark:text-slate-300">Yes. Scanned PDFs are supported.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 		
 		<div id="modalOverlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center transition-opacity duration-300 opacity-0" aria-hidden="true">
 			
