@@ -5,20 +5,32 @@ import Header from '../../../components/sections/Header.astro';
 import Footer from '../../../components/sections/Footer.astro';
 import PostCard from '../../../components/ui/card/PostCard.astro';
 import { slugifyTag as slugify } from '../../../lib/slug';
+import { authors, defaultAuthor } from '../../../data/author';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
+  
+  // 获取所有作者的slug（包括文章中提到的和预定义的）
   const authorSlugs = [
-    ...new Set(
-      posts.map((p) => slugify(p.data.author || 'Site Author'))
-    ),
+    ...new Set([
+      ...posts.map((p) => slugify(p.data.author || defaultAuthor.name)),
+      ...authors.map((a) => slugify(a.name))
+    ])
   ];
+  
   return authorSlugs.map((slug) => ({ params: { slug } }));
 }
 
 const { slug } = Astro.params;
-const posts = (await getCollection('blog')).filter((p) => slugify(p.data.author || 'Site Author') === slug);
-const authorName = posts[0]?.data.author || 'Site Author';
+const posts = (await getCollection('blog')).filter((p) => slugify(p.data.author || defaultAuthor.name) === slug);
+
+// 从作者名称中获取匹配的作者名称
+// 首先尝试从authors数组中找到匹配的作者
+const matchedAuthor = authors.find(a => slugify(a.name) === slug);
+// 然后尝试从文章中找到匹配的作者名称
+const authorNameFromPosts = [...new Set(posts.map(p => p.data.author))].find(name => slugify(name) === slug);
+// 如果都没找到，使用默认作者
+const authorName = matchedAuthor?.name || authorNameFromPosts || defaultAuthor.name;
 ---
 <html lang="en" data-theme="dark" class="dark">
   <head>

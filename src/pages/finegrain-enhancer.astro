@@ -1,0 +1,353 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/sections/Footer.astro';
+import Header from '../components/sections/Header.astro';
+---
+
+<!-- 20251213
+使用https://huggingface.co/spaces/finegrain/finegrain-image-enhancer项目
+快是快，但是有限额 -->
+
+
+<!doctype html>
+<html lang="zh-CN" data-theme="dark" class="dark">
+	<head>
+		<BaseHead title={`Free AI Image Enhancer (Finegrain)`} description="Enhance and upscale images with fine-grained control using AI." />
+		<style>
+			.spinner {
+				border: 4px solid rgba(255, 255, 255, 0.1);
+				width: 36px;
+				height: 36px;
+				border-radius: 50%;
+				border-left-color: #3b82f6;
+				animation: spin 1s ease-in-out infinite;
+			}
+			@keyframes spin {
+				0% { transform: rotate(0deg); }
+				100% { transform: rotate(360deg); }
+			}
+            .hidden { display: none !important; }
+		</style>
+	</head>
+	<body>
+		<!-- 图标定义 -->
+		<svg style="display: none;" aria-hidden="true">
+			<symbol id="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+			</symbol>
+            <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M12 12.75l-4.5-4.5M12 12.75l4.5-4.5M12 12.75V3" />
+            </symbol>
+            <symbol id="icon-magic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
+            </symbol>
+		</svg>
+
+		<Header />
+		<main>
+			<section class="py-1 px-4">
+				<div class="max-w-6xl mx-auto">
+					<h1 class="text-3xl md:text-4xl font-bold text-center mb-8 flex items-center justify-center gap-3">
+                        <svg class="w-8 h-8 text-blue-500"><use href="#icon-magic"></use></svg>
+                        Finegrain AI Image Enhancer
+                    </h1>
+					
+					<div class="card-surface p-8">
+						<div class="w-full transition-all duration-300 mb-6 text-center">
+							<div class="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-8 bg-gray-50 dark:bg-gray-800/50 relative">
+								
+                                <!-- Upload UI -->
+                                <div id="upload-container">
+                                    <div class="w-20 h-20 bg-blue-500/10 text-blue-500 rounded-full flex items-center justify-center mb-6 mx-auto">
+                                        <svg class="w-10 h-10"><use href="#icon-upload"></use></svg>
+                                    </div>
+                                    <h3 class="font-semibold text-xl mb-3">Upload Image to Enhance</h3>
+                                    <p class="text-gray-500 text-base max-w-sm text-center leading-relaxed mx-auto mb-6">
+                                        Support JPG, PNG, WebP. <br>
+                                        <span class="text-xs text-gray-400">Works best with a prompt describing the image.</span>
+                                    </p>
+                                    
+                                    <label for="file-upload" class="cursor-pointer inline-flex items-center justify-center gap-2 px-10 py-3 bg-blue-600 text-white rounded-lg text-sm font-bold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/20">
+                                        <span>Choose File</span>
+                                        <input id="file-upload" type="file" accept="image/*" class="hidden" />
+                                    </label>
+                                </div>
+
+                                <!-- Process UI -->
+                                <div id="process-container" class="hidden flex flex-col items-center w-full">
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full mb-8 items-start">
+                                        <!-- Original -->
+                                        <div class="flex flex-col items-center">
+                                            <span class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">Original</span>
+                                            <div class="relative group w-full bg-black/5 dark:bg-white/5 rounded-lg overflow-hidden">
+                                                <img id="preview-image" class="w-full h-auto max-h-[500px] object-contain" />
+                                            </div>
+                                            <div id="preview-info" class="mt-2 text-xs text-gray-500 font-mono"></div>
+                                        </div>
+                                        
+                                        <!-- Result -->
+                                        <div class="flex flex-col items-center relative min-h-[300px]">
+                                            <span class="text-sm font-bold text-blue-500 mb-2 uppercase tracking-wide">Enhanced Result</span>
+                                            
+                                            <div class="relative w-full bg-black/5 dark:bg-white/5 rounded-lg overflow-hidden min-h-[300px] flex items-center justify-center border border-gray-200 dark:border-gray-700">
+                                                <img id="result-image" crossorigin="anonymous" class="hidden w-full h-auto max-h-[500px] object-contain z-10" />
+                                                
+                                                <div id="loading-spinner" class="hidden flex flex-col items-center justify-center absolute inset-0 z-0">
+                                                    <div class="spinner border-blue-500 mb-4"></div>
+                                                    <p class="text-sm font-medium text-gray-600 dark:text-gray-300 animate-pulse" id="status-text">Initializing...</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div id="result-info" class="hidden mt-2 text-xs text-blue-500 font-mono"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Controls -->
+                                    <div class="w-full max-w-2xl bg-gray-100 dark:bg-gray-800/80 rounded-xl p-6 mb-8 border border-gray-200 dark:border-gray-700">
+                                        <div class="grid gap-6">
+                                            <div>
+                                                <label class="block text-sm font-bold mb-2 text-left">Prompt (Important!)</label>
+                                                <input type="text" id="prompt-input" placeholder="e.g. A photo of a cat, high resolution, 8k" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 outline-none transition-all" />
+                                            </div>
+
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                <div>
+                                                    <label class="block text-sm font-bold mb-2 text-left">Upscale Factor: <span id="upscale-val" class="text-blue-500">2x</span></label>
+                                                    <input type="range" id="upscale-slider" min="1" max="4" step="1" value="2" class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-blue-600" />
+                                                    <div class="flex justify-between text-xs text-gray-400 mt-1"><span>1x</span><span>2x</span><span>3x</span><span>4x</span></div>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-bold mb-2 text-left">Denoise Strength: <span id="denoise-val" class="text-blue-500">0.35</span></label>
+                                                    <input type="range" id="denoise-slider" min="0.1" max="1.0" step="0.05" value="0.35" class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-blue-600" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Actions -->
+                                    <div class="flex flex-wrap justify-center gap-4 w-full">
+                                        <button id="enhance-btn" class="inline-flex items-center justify-center gap-2 px-8 py-3 bg-blue-600 text-white rounded-lg text-sm font-bold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20 disabled:opacity-50 disabled:cursor-not-allowed">
+                                            <svg class="w-5 h-5"><use href="#icon-magic"></use></svg>
+                                            Start Enhancing
+                                        </button>
+
+                                        <div id="download-group" class="hidden flex gap-2">
+                                            <button id="download-jpg-btn" class="inline-flex items-center justify-center gap-2 px-5 py-3 bg-gray-700 text-white rounded-lg text-sm font-bold hover:bg-gray-600 transition-colors shadow-lg">JPG</button>
+                                            <button id="download-png-btn" class="inline-flex items-center justify-center gap-2 px-5 py-3 bg-gray-700 text-white rounded-lg text-sm font-bold hover:bg-gray-600 transition-colors shadow-lg">PNG</button>
+                                        </div>
+
+                                        <button id="reset-btn" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white rounded-lg text-sm font-bold hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">Reset</button>
+                                    </div>
+                                    
+                                    <p id="error-msg" class="text-red-500 text-sm mt-4 hidden font-medium text-center bg-red-50 dark:bg-red-900/20 p-3 rounded-lg"></p>
+                                </div>
+
+								<p class="text-center text-gray-500 text-xs mt-8">Powered by <a href="https://huggingface.co/spaces/finegrain/finegrain-image-enhancer" target="_blank" class="text-blue-500 hover:underline">Finegrain Image Enhancer</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		<Footer />
+
+        <!-- ★★★ 使用 Type Module 从 CDN 引入最新版 Client ★★★ -->
+        <script type="module">
+            import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client@latest/+esm";
+
+            // Space ID
+            const SPACE_ID = "finegrain/finegrain-image-enhancer";
+            
+            const fileInput = document.getElementById('file-upload');
+            const uploadContainer = document.getElementById('upload-container');
+            const processContainer = document.getElementById('process-container');
+            const previewImage = document.getElementById('preview-image');
+            const previewInfo = document.getElementById('preview-info');
+            const resultImage = document.getElementById('result-image');
+            const resultInfo = document.getElementById('result-info');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const statusText = document.getElementById('status-text');
+            const enhanceBtn = document.getElementById('enhance-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const errorMsg = document.getElementById('error-msg');
+            const downloadGroup = document.getElementById('download-group');
+            const btnJpg = document.getElementById('download-jpg-btn');
+            const btnPng = document.getElementById('download-png-btn');
+            const promptInput = document.getElementById('prompt-input');
+            const upscaleSlider = document.getElementById('upscale-slider');
+            const upscaleVal = document.getElementById('upscale-val');
+            const denoiseSlider = document.getElementById('denoise-slider');
+            const denoiseVal = document.getElementById('denoise-val');
+
+            let currentFile = null;
+            let appClient = null;
+
+            // UI Listeners
+            upscaleSlider.addEventListener('input', (e) => upscaleVal.innerText = e.target.value + "x");
+            denoiseSlider.addEventListener('input', (e) => denoiseVal.innerText = e.target.value);
+
+            // Utils
+            function formatBytes(bytes) { if(!+bytes) return '0 B'; const k=1024, i=Math.floor(Math.log(bytes)/Math.log(k)); return `${parseFloat((bytes/Math.pow(k,i)).toFixed(1))} ${['B','KB','MB'][i]}`; }
+            
+            function updateImageDimensions(imgElement, infoElement, fileSize = null) {
+                const width = imgElement.naturalWidth;
+                const height = imgElement.naturalHeight;
+                let text = `${width} x ${height} px`;
+                if (fileSize) text += ` • ${formatBytes(fileSize)}`;
+                infoElement.innerText = text;
+                infoElement.classList.remove('hidden');
+            }
+
+            function downloadImage(format) {
+                if (!resultImage.src) return;
+                const canvas = document.createElement('canvas');
+                canvas.width = resultImage.naturalWidth;
+                canvas.height = resultImage.naturalHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(resultImage, 0, 0);
+                const dataUrl = canvas.toDataURL(format === 'jpg' ? 'image/jpeg' : 'image/png', 0.95);
+                const link = document.createElement('a');
+                link.download = `finegrain_${Date.now()}.${format}`;
+                link.href = dataUrl;
+                link.click();
+            }
+
+            // 1. Pre-connect
+            (async () => {
+                try {
+                    console.log("Connecting to API...");
+                    appClient = await Client.connect(SPACE_ID);
+                    console.log("✅ API Ready");
+                } catch (e) {
+                    console.error("Connection failed:", e);
+                }
+            })();
+
+            // 2. Select File
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                currentFile = file;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImage.src = e.target.result;
+                    uploadContainer.classList.add('hidden');
+                    processContainer.classList.remove('hidden');
+                    errorMsg.classList.add('hidden');
+                    previewImage.onload = () => updateImageDimensions(previewImage, previewInfo, file.size);
+                };
+                reader.readAsDataURL(file);
+            });
+
+            // 3. Reset
+            resetBtn.addEventListener('click', () => {
+                currentFile = null;
+                fileInput.value = '';
+                resultImage.classList.add('hidden');
+                resultImage.src = '';
+                resultInfo.classList.add('hidden');
+                processContainer.classList.add('hidden');
+                uploadContainer.classList.remove('hidden');
+                loadingSpinner.classList.add('hidden');
+                downloadGroup.classList.add('hidden');
+                enhanceBtn.disabled = false;
+                enhanceBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                errorMsg.classList.add('hidden');
+            });
+
+            // 4. Process
+            enhanceBtn.addEventListener('click', async () => {
+                if (!currentFile) return;
+                
+                if (!appClient) {
+                    try {
+                        statusText.innerText = "Connecting...";
+                        appClient = await Client.connect(SPACE_ID);
+                    } catch(e) {
+                        alert("Could not connect to server. Please check your network (VPN).");
+                        return;
+                    }
+                }
+
+                loadingSpinner.classList.remove('hidden');
+                resultImage.classList.add('hidden');
+                resultInfo.classList.add('hidden');
+                downloadGroup.classList.add('hidden');
+                enhanceBtn.disabled = true;
+                enhanceBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                statusText.innerText = "Processing (Wait ~30s)...";
+                errorMsg.classList.add('hidden');
+
+                try {
+                    const promptVal = promptInput.value || "high quality, detailed";
+                    const upscaleFactor = parseInt(upscaleSlider.value);
+                    const denoiseStrength = parseFloat(denoiseSlider.value);
+
+                    // Call API using named parameters (Standard for Gradio 4 Client)
+                    const result = await appClient.predict("/process", { 
+                        input_image: currentFile,
+                        prompt: promptVal,
+                        negative_prompt: "(lowres, low quality, worst quality:1.2), (text:1.2), watermark, painting, drawing, illustration, glitch, deformed, mutated, cross-eyed, ugly, disfigured",
+                        seed: 42,
+                        upscale_factor: upscaleFactor,
+                        controlnet_scale: 0.6,
+                        controlnet_decay: 1,
+                        condition_scale: 6,
+                        tile_width: 112,
+                        tile_height: 144,
+                        denoise_strength: denoiseStrength,
+                        num_inference_steps: 18,
+                        solver: "DDIM"
+                    });
+
+                    // Parse Result (returns a tuple of [orig, result])
+                    // The client usually returns just the data array
+                    console.log("API Result:", result);
+
+                    let finalUrl = null;
+                    
+                    if (result && result.data && result.data.length > 0) {
+                        // The output component is a Slider (Before/After)
+                        // It usually returns an array of 2 images: [image1, image2]
+                        // or tuple structure.
+                        const outputData = result.data[0]; 
+                        
+                        if (Array.isArray(outputData) && outputData.length > 1) {
+                            // Index 1 is usually the 'After' image
+                            finalUrl = outputData[1].url || outputData[1].path || outputData[1];
+                        } else {
+                            finalUrl = outputData.url || outputData;
+                        }
+                    }
+
+                    if (finalUrl) {
+                        resultImage.src = finalUrl;
+                        resultImage.onload = () => {
+                            resultImage.classList.remove('hidden');
+                            loadingSpinner.classList.add('hidden');
+                            statusText.innerText = "Done!";
+                            downloadGroup.classList.remove('hidden');
+                            enhanceBtn.classList.add('hidden'); // Hide start button to prevent double submit
+                            updateImageDimensions(resultImage, resultInfo);
+                        };
+                    } else {
+                        throw new Error("No image data returned.");
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    statusText.innerText = "Error";
+                    errorMsg.innerText = "Failed: " + error.message;
+                    errorMsg.classList.remove('hidden');
+                    loadingSpinner.classList.add('hidden');
+                    enhanceBtn.disabled = false;
+                    enhanceBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            });
+
+            btnJpg.addEventListener('click', () => downloadImage('jpg'));
+            btnPng.addEventListener('click', () => downloadImage('png'));
+        </script>
+	</body>
+</html>
