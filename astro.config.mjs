@@ -9,7 +9,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.yhjtools.top/',
+  site: 'https://www.yhjtools.top',
   integrations: [mdx(), sitemap()],
 
   vite: {
