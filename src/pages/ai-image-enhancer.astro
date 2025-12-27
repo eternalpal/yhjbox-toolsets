@@ -50,7 +50,6 @@ import Header from '../components/sections/Header.astro';
                                         <svg class="w-10 h-10"><use href="#icon-upload"></use></svg>
                                     </div>
                                     <h3 class="font-semibold text-xl mb-3">Upload Image to Upscale</h3>
-<<<<<<< HEAD
                                     
                                     <!-- 限制提示信息 -->
                                     <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700/50 rounded-lg p-3 max-w-sm mx-auto mb-6">
@@ -62,11 +61,6 @@ import Header from '../components/sections/Header.astro';
                                             <li>• Max Dimension: <strong>500 px</strong></li>
                                         </ul>
                                     </div>
-=======
-                                    <p class="text-gray-500 text-base max-w-sm text-center leading-relaxed mx-auto mb-6">
-                                        JPG, PNG, WebP supported.
-                                    </p>
->>>>>>> 083c5c17cf656b1291c5b3a0de2031f390d3cce4
                                     
                                     <label for="file-upload" class="cursor-pointer inline-flex items-center justify-center gap-2 px-10 py-3 bg-primary text-white rounded-lg text-sm font-bold hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
                                         <span>Choose File</span>
@@ -81,17 +75,10 @@ import Header from '../components/sections/Header.astro';
                                         <!-- 原图 -->
                                         <div class="flex flex-col items-center md:col-span-1">
                                             <span class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">Original</span>
-<<<<<<< HEAD
                                             <div class="relative group w-full bg-black/5 dark:bg-white/5 rounded-lg overflow-hidden flex justify-center">
                                                 <img id="preview-image" class="h-auto max-h-[400px] object-contain" />
                                             </div>
                                             <div id="preview-info" class="mt-2 text-xs text-gray-500 font-mono bg-gray-200 dark:bg-gray-800 px-2 py-1 rounded">
-=======
-                                            <div class="relative group">
-                                                <img id="preview-image" class="rounded-lg max-h-48 object-contain border border-gray-200 dark:border-gray-700 shadow-sm" />
-                                            </div>
-                                            <div id="preview-info" class="mt-2 text-xs text-gray-500 font-mono bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded">
->>>>>>> 083c5c17cf656b1291c5b3a0de2031f390d3cce4
                                                 - x - px
                                             </div>
                                         </div>
@@ -101,11 +88,7 @@ import Header from '../components/sections/Header.astro';
                                             <span class="text-sm font-bold text-primary mb-2 uppercase tracking-wide">Upscaled Result (4x)</span>
                                             
                                             <!-- 结果图 -->
-<<<<<<< HEAD
                                             <img id="result-image" crossorigin="anonymous" class="hidden w-full h-auto max-h-[500px] object-contain z-10" />
-=======
-                                            <img id="result-image" crossorigin="anonymous" class="hidden rounded-lg w-full h-auto object-contain shadow-md z-10" />
->>>>>>> 083c5c17cf656b1291c5b3a0de2031f390d3cce4
                                             
                                             <!-- 结果信息 -->
                                             <div id="result-info" class="hidden mt-3 text-sm text-primary font-mono bg-primary/10 px-3 py-1.5 rounded border border-primary/20">
@@ -121,13 +104,8 @@ import Header from '../components/sections/Header.astro';
                                     </div>
 
                                     <!-- 模型选择 -->
-<<<<<<< HEAD
                                     <div class="flex justify-center items-center gap-6 mb-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
                                         <span class="font-bold text-sm mr-2">Mode:</span>
-=======
-                                    <div class="flex justify-center gap-6 mb-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                                        <span class="font-bold text-sm my-auto">Mode:</span>
->>>>>>> 083c5c17cf656b1291c5b3a0de2031f390d3cce4
                                         <label class="flex items-center gap-2 cursor-pointer">
                                             <input type="radio" name="model_type" value="base" checked class="w-4 h-4 text-primary accent-primary">
                                             <span class="text-sm">Photo (Base)</span>
@@ -140,11 +118,7 @@ import Header from '../components/sections/Header.astro';
 
                                     <!-- 按钮栏 -->
                                     <div class="flex flex-wrap justify-center gap-4 w-full border-t border-gray-200 dark:border-gray-700 pt-6">
-<<<<<<< HEAD
                                         <button id="enhance-btn" class="inline-flex items-center justify-center gap-2 px-8 py-3 bg-green-600 text-white rounded-lg text-sm font-bold hover:bg-green-700 transition-colors shadow-lg shadow-green-600/20 disabled:opacity-50 disabled:cursor-not-allowed">
-=======
-                                        <button id="enhance-btn" class="inline-flex items-center justify-center gap-2 px-8 py-3 bg-green-600 text-white rounded-lg text-sm font-bold hover:bg-green-700 transition-colors shadow-lg shadow-green-600/20">
->>>>>>> 083c5c17cf656b1291c5b3a0de2031f390d3cce4
                                             Start Upscaling
                                         </button>
 
@@ -165,11 +139,7 @@ import Header from '../components/sections/Header.astro';
                                     <p id="error-msg" class="text-red-500 text-sm mt-4 hidden font-medium text-center bg-red-50 dark:bg-red-900/20 p-2 rounded"></p>
                                 </div>
 
-<<<<<<< HEAD
 								<p class="text-center text-gray-500 text-sm mt-6">Powered by Real-ESRGAN</p>
-=======
-								<p class="text-center text-gray-500 text-sm mt-6">Powered by Real-ESRGAN</a></p>
->>>>>>> 083c5c17cf656b1291c5b3a0de2031f390d3cce4
 							</div>
 						</div>
 					</div>
@@ -299,7 +269,6 @@ import Header from '../components/sections/Header.astro';
 		<Footer />
 
         <script>
-<<<<<<< HEAD
             // Space URL
             const SPACE_URL = "https://eternalpal-real-esrgan-image.hf.space"; 
             
@@ -307,14 +276,6 @@ import Header from '../components/sections/Header.astro';
             const MAX_FILE_SIZE_MB = 1;  // 限制 1MB
             const MAX_DIMENSION = 500;   // 限制 500px
 
-=======
-            // ❌ 删除: import { Client } from "@gradio/client";
-            // 我们改用原生 fetch，不依赖任何库
-
-            // ★★★ 这里填写你的 Space 地址 ★★★
-            const SPACE_URL = "https://eternalpal-real-esrgan-image.hf.space"; 
-            
->>>>>>> 083c5c17cf656b1291c5b3a0de2031f390d3cce4
             // DOM 引用
             const fileInput = document.getElementById('file-upload');
             const uploadContainer = document.getElementById('upload-container');
@@ -377,7 +338,6 @@ import Header from '../components/sections/Header.astro';
                 });
             }
 
-<<<<<<< HEAD
             // 1. 原图加载 (带严格限制)
             fileInput.addEventListener('change', (e) => {
                 const file = e.target.files[0];
@@ -412,20 +372,6 @@ import Header from '../components/sections/Header.astro';
                         updateImageDimensions(previewImage, previewInfo, file.size);
                     };
                     img.src = e.target.result;
-=======
-            // 1. 原图加载
-            fileInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                currentFile = file;
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    previewImage.src = e.target.result;
-                    uploadContainer.classList.add('hidden');
-                    processContainer.classList.remove('hidden');
-                    errorMsg.classList.add('hidden');
-                    previewImage.onload = () => updateImageDimensions(previewImage, previewInfo, file.size);
->>>>>>> 083c5c17cf656b1291c5b3a0de2031f390d3cce4
                 };
                 reader.readAsDataURL(file);
             });
@@ -467,11 +413,7 @@ import Header from '../components/sections/Header.astro';
                     // 1. 转 Base64
                     const base64Image = await convertFileToBase64(currentFile);
                     
-<<<<<<< HEAD
                     statusText.innerText = "Processing (Wait ~10-20s)...";
-=======
-                    statusText.innerText = "Processing (CPU mode ~20-40s)...";
->>>>>>> 083c5c17cf656b1291c5b3a0de2031f390d3cce4
 
                     // 2. 构造请求 Payload
                     // 对应后端 inputs: [Image(type="pil"), Radio]
