@@ -2,7 +2,7 @@
 title: 'Markdown Style Guide (First Post You Need to Check in Astro)'
 description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
 pubDate: 'Aug 15 2025'
-heroImage: '../../assets/images/example-blog-hero8.jpg'
+heroImage: '../../assets/images/blog-placeholder-1.jpg'
 tags: ['astro']
 ---
 

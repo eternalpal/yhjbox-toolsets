@@ -2,7 +2,7 @@
 title: 'How to Split PDF A3 to Two A4 Pages Online'
 description: 'Split A3 PDF pages in half vertically and convert them into 2 A4 pages.Free, fast, no registration required.'
 pubDate: 'Dec 09 2025'
-heroImage: '../../assets/images/example-blog-hero1.jpg'
+heroImage: '../../assets/images/blog-placeholder-1.jpg'
 category: 'tool'
 tags: ['PDF', 'A3', 'A4', 'Online']
 featured: True

@@ -2,7 +2,7 @@
 title: 'AI image enhancer'
 description: 'AI image enhancer.'
 pubDate: 'Dec 12 2025'
-heroImage: '../../assets/images/example-blog-hero2.jpg'
+heroImage: '../../assets/images/blog-placeholder-1.jpg'
 category: 'tool'
 tags: ['AI', 'A3', 'image', 'Online']
 featured: True
