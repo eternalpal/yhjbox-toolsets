@@ -2,14 +2,10 @@
 title: 'How to Split PDF A3 to Two A4 Pages Online'
 description: 'Split A3 PDF pages in half vertically and convert them into 2 A4 pages.Free, fast, no registration required.'
 pubDate: 'Dec 09 2025'
-heroImage: '../../assets/images/blog-placeholder-1.jpg'
 category: 'tool'
 tags: ['PDF', 'A3', 'A4', 'Online']
 featured: True
 ---
-
-
-# How to Split PDF A3 to Two A4 Pages Online
 
 Printing an A3 PDF on A4 paper often makes text too small and hard to read.
 A better solution is to **split an A3 PDF into two A4 pages vertically**, keeping the original size and layout.
@@ -32,10 +28,12 @@ Splitting A3 pages down the middle helps you:
 
 ## How to Split PDF A3 to Two A4 Pages
 
-You don’t need any software. Just use an online tool.
+You don’t need any software. Just use our online tool：
 
-1. Upload your A3 PDF to **【Your Tool】**
-2. Choose **vertical split (A3 to two A4)**
+<u>**[A3 to 2 x A4 Splitter](/a3-to-2-a4-splitter)**</u>
+
+1. Upload your A3 PDF
+2. Click "Start"
 3. Process the file
 4. Download the new A4 PDF
 
@@ -62,7 +60,7 @@ Yes. Scanned A3 PDFs can also be **split down the middle** and converted into pr
 
 ## Start Splitting A3 to A4 Now
 
-If you need to **split PDF A3 to two A4 pages online**, try **【Your Tool】**.
+If you need to **split PDF A3 to two A4 pages online**, try <u>**[A3 to 2 x A4 Splitter](/a3-to-2-a4-splitter)**</u>.
 
 Upload your file, split it vertically, and download perfectly sized A4 pages — **fast and free**.
 
@@ -71,11 +69,14 @@ Upload your file, split it vertically, and download perfectly sized A4 pages —
 ## FAQ
 
 **Can I split PDF pages vertically?**
+
 Yes, A3 pages can be cut in half vertically to create two A4 pages.
 
 **Is the tool free?**
+
 Yes. No signup and no watermark.
 
 **Can I print the A4 pages directly?**
+
 Yes, the output is ready for standard A4 printers.
 
