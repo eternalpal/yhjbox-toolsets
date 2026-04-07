@@ -1,0 +1,25 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/sections/Header.astro';
+import HeroSection from '../../components/sections/HeroSection.astro';
+import SkillsSection from '../../components/sections/SkillsSection.astro';
+import Footer from '../../components/sections/Footer.astro';
+import { skills } from '../../data/skills';
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <BaseHead />
+  </head>
+  <body class="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <Header />
+    <main>
+      <HeroSection />
+      <section class="py-4">
+        <SkillsSection skills={skills} />
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>

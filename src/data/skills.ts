@@ -3,25 +3,29 @@ export const skills = [
     icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm3-4H7v-2h8v2zm0-4H7V7h8v2z"/></svg>`,
     title: "A3 to 2 x A4 Splitter",
     description: "Split A3 PDF pages in half vertically down the middle to two A4 pages",
-    href: "/a3-to-2-a4-splitter"
+    href: "/a3-to-2-a4-splitter",
+    href_zh: "/zh/a3-to-2-a4-splitter"
   },
   {
     icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm3-4H7v-2h8v2zm0-4H7V7h8v2z"/></svg>`,
     title: "AI Image Clear & Upscaler",
     description: "Enhance and upscale images using AI technology, removing noise and improving details.",
-    href: "/ai-image-enhancer"
+    href: "/ai-image-enhancer",
+    href_zh: "/zh/ai-image-enhancer"
   },
   {
     icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm3-4H7v-2h8v2zm0-4H7V7h8v2z"/></svg>`,
     title: "GIF compressor",
     description: "Compress and extract frames from GIF files with advanced optimization options.",
-    href: "/gif-compressor"
+    href: "/gif-compressor",
+    href_zh: "/zh/gif-compressor"
   },
   {
     icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm3-4H7v-2h8v2zm0-4H7V7h8v2z"/></svg>`,
     title: "Composition Grid Generator",
     description: "Create primary school composition grid paper layouts with automatic formatting and export options.",
-    href: "/composition-grid-generator"
+    href: "/composition-grid-generator",
+    href_zh: "/zh/composition-grid-generator"
   }
 
 ];

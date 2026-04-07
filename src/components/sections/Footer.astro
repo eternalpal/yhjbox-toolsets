@@ -1,5 +1,14 @@
 ---
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const currentYear = new Date().getFullYear();
 ---
 
 <footer id="contact" class="py-12 px-4 text-center">
+    <div class="container mx-auto max-w-6xl">
+        <p class="text-[color:var(--color-text-secondary)] mb-4">{t('footer.copyright', { year: currentYear.toString() })}</p>
+        <p class="text-[color:var(--color-text-secondary)]">{t('footer.contact')}</p>
+    </div>
 </footer>

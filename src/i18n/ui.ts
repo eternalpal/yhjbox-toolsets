@@ -1,0 +1,53 @@
+export const languages = {
+  en: 'English',
+  zh: '中文',
+};
+
+export const defaultLang = 'en';
+
+export const ui = {
+  en: {
+    'nav.home': 'Home',
+    'nav.about': 'About',
+    'nav.blog': 'Blog',
+    'nav.skills': 'Tools',
+    'hero.title': 'Welcome to Yhjbox',
+    'hero.subtitle': 'Share nice, useful tools I build in my daily work',
+    'skills.title': 'Tools',
+    'skills.description': 'Useful tools for daily work',
+    'projects.title': 'Projects',
+    'projects.description': 'My recent projects',
+    'work.title': 'Work Experience',
+    'work.description': 'My professional journey',
+    'studies.title': 'Education',
+    'studies.description': 'My academic background',
+    'footer.copyright': '© {year} Yhjbox. All rights reserved.',
+    'footer.contact': 'Contact',
+    'blog.title': 'Blog',
+    'blog.description': 'Latest articles and insights',
+    'about.title': 'About Me',
+    'about.description': 'Learn more about me and my work',
+  },
+  zh: {
+    'nav.home': '首页',
+    'nav.about': '关于我',
+    'nav.blog': '博客',
+    'nav.skills': '工具',
+    'hero.title': '欢迎来到 Yhjbox',
+    'hero.subtitle': '分享我在日常工作中构建的实用工具',
+    'skills.title': '工具',
+    'skills.description': '日常工作的实用工具',
+    'projects.title': '项目',
+    'projects.description': '我最近的项目',
+    'work.title': '工作经验',
+    'work.description': '我的职业历程',
+    'studies.title': '教育背景',
+    'studies.description': '我的学术背景',
+    'footer.copyright': '© {year} Yhjbox. 保留所有权利。',
+    'footer.contact': '联系我',
+    'blog.title': '博客',
+    'blog.description': '最新文章和见解',
+    'about.title': '关于我',
+    'about.description': '了解更多关于我和我的工作',
+  },
+} as const;
