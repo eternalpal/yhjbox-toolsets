@@ -4,7 +4,9 @@ import { getLangFromUrl, useTranslations, getLocaleUrl } from '../../i18n/utils'
 interface SkillItem {
   icon: string; // inline SVG
   title: string;
+  title_zh?: string;
   description: string;
+  description_zh?: string;
   href: string;
   href_zh?: string;
 }
@@ -28,12 +30,14 @@ const { title = t('skills.title'), skills } = Astro.props as Props;
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
       {skills.map((skill) => {
         const skillHref = lang === 'zh' && skill.href_zh ? skill.href_zh : skill.href;
+        const skillTitle = lang === 'zh' && skill.title_zh ? skill.title_zh : skill.title;
+        const skillDescription = lang === 'zh' && skill.description_zh ? skill.description_zh : skill.description;
         return (
           <a href={getLocaleUrl(lang, skillHref)} class="card-surface p-6 group transition-all duration-300 hover:-translate-y-2">
             <div class="flex flex-col items-center text-center">
               <div class="mb-4 rounded-lg size-[56px] flex items-center justify-center text-[var(--accent)] opacity-100 transition-all duration-300 will-change-transform group-hover:scale-115 [&>svg]:w-8 [&>svg]:h-8" style="background: rgba(var(--accent-rgb),0.15);" set:html={skill.icon} />
-              <h3 class="text-xl font-bold text-[var(--accent)] mb-2">{skill.title}</h3>
-              <p class="text-sm text-[color:var(--color-text-secondary)] leading-relaxed max-w-prose">{skill.description}</p>
+              <h3 class="text-xl font-bold text-[var(--accent)] mb-2">{skillTitle}</h3>
+              <p class="text-sm text-[color:var(--color-text-secondary)] leading-relaxed max-w-prose">{skillDescription}</p>
             </div>
           </a>
         );

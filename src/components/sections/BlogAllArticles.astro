@@ -1,17 +1,21 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import PostCard from '../ui/card/PostCard.astro';
+import { getLangFromUrl } from '../../i18n/utils';
 
 interface Props {
   posts: CollectionEntry<'blog'>[];
   title?: string;
 }
 
-const { posts = [], title = 'All Articles' } = Astro.props as Props;
+const { posts = [], title } = Astro.props as Props;
+const lang = getLangFromUrl(Astro.url);
+const defaultTitle = lang === 'zh' ? '所有文章' : 'All Articles';
+const displayTitle = title || defaultTitle;
 ---
 
 <section class="space-y-6">
-  <h2 class="text-3xl font-bold">{title}</h2>
+  <h2 class="text-3xl font-bold">{displayTitle}</h2>
   <div class="blog-grid">
     {posts.map((post) => (
       <PostCard post={post} />

@@ -1,11 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseHead from '../../../components/BaseHead.astro';
-import Header from '../../../components/sections/Header.astro';
-import Footer from '../../../components/sections/Footer.astro';
-import PostCard from '../../../components/ui/card/PostCard.astro';
-import { slugifyTag } from '../../../lib/slug';
-import { getTagMeta } from '../../../data/tags';
+import BaseHead from '../../../../components/BaseHead.astro';
+import Header from '../../../../components/sections/Header.astro';
+import Footer from '../../../../components/sections/Footer.astro';
+import PostCard from '../../../../components/ui/card/PostCard.astro';
+import { slugifyTag } from '../../../../lib/slug';
+import { getTagMeta } from '../../../../data/tags';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -23,17 +23,17 @@ const { tag } = Astro.params;
 const posts = (await getCollection('blog')).filter((p) => (p.data.tags || []).some(t => slugifyTag(t) === tag));
 const meta = getTagMeta(tag);
 ---
-<html lang="en" data-theme="dark" class="dark">
+<html lang="zh-CN" data-theme="dark" class="dark">
   <head>
     <BaseHead title={meta.title} description={meta.description} />
-    <link rel="alternate" type="application/rss+xml" title={`Tag: ${tag} feed`} href={`/rss/tag/${tag}.xml`} />
+    <link rel="alternate" type="application/rss+xml" title={`标签: ${tag}  feed`} href={`/zh/rss/tag/${tag}.xml`} />
   </head>
   <body>
     <Header />
     <main class="mx-auto max-w-6xl px-4 py-10 space-y-6">
       <div class="flex items-center justify-between gap-3">
         <h1 class="text-3xl font-bold">{meta.title}</h1>
-        <a class="sw-btn-sm" href={`/rss/tag/${tag}.xml`}>Subscribe</a>
+        <a class="sw-btn-sm" href={`/zh/rss/tag/${tag}.xml`}>订阅</a>
       </div>
       <div class="blog-grid">
         {posts.map((p) => (
@@ -44,5 +44,3 @@ const meta = getTagMeta(tag);
     <Footer />
   </body>
 </html>
-
-

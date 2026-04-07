@@ -5,7 +5,13 @@ import { slugifyTag } from '../../../../src/lib/slug';
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   const tags = [...new Set(posts.flatMap((p) => p.data.tags || []))];
-  return tags.map((t) => ({ params: { tag: slugifyTag(t) } }));
+  return tags
+    .filter(tag => tag && tag.trim())
+    .map((tag) => {
+      const slugifiedTag = slugifyTag(tag);
+      return slugifiedTag ? { params: { tag: slugifiedTag } } : null;
+    })
+    .filter(Boolean);
 }
 
 export async function GET(context) {

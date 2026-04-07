@@ -1,22 +1,20 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/sections/Header.astro';
-import Footer from '../../components/sections/Footer.astro';
+import Layout from '../../layouts/BlogPost.astro';
+import GlowLineSeparator from '@/components/ui/separator/GlowLineSeparator.astro';
+const pageTitle = '关于我';
+const pageDescription = '了解我的背景和软件开发方法。';
 ---
 
-<!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
-    <BaseHead title="关于我" />
-  </head>
-  <body class="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-    <Header />
-    <main class="container mx-auto px-4 py-12">
-      <h1 class="text-4xl font-bold mb-6">关于我</h1>
-      <p class="text-lg mb-4">欢迎访问我的个人网站！我是一名开发者，专注于构建实用的工具和分享技术知识。</p>
-      <p class="text-lg mb-4">在这个网站上，你可以找到我开发的各种工具，阅读我的博客文章，了解我的工作经验和教育背景。</p>
-      <p class="text-lg">如果你有任何问题或合作意向，欢迎联系我！</p>
-    </main>
-    <Footer />
-  </body>
-</html>
+<Layout title={pageTitle} description={pageDescription} pubDate={new Date()} showHeader={false}>
+  <p>
+    我喜欢在日常开发中创建有趣且实用的工具。如果你有想法想交流，随时联系我。
+  </p>
+  <p>
+    联系方式：
+  </p>
+  <p>
+    微信：yhjbox66
+  </p>
+  <GlowLineSeparator />
+
+</Layout>

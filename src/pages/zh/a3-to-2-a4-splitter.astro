@@ -718,6 +718,129 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 								const pageCount = pdfDoc.getPageCount();
 
 								for (let p = 0; p < pageCount; p++) {
-									const page = await pdfAnalysis.getPage(p + 1);
-									
+							const page = await pdfAnalysis.getPage(p + 1);
+							
+							const viewport = page.getViewport({scale: 0.5});
+							
+							// 动态调整 Canvas 尺寸（会自动清空内容）
+							if (sharedCanvas.width !== viewport.width || sharedCanvas.height !== viewport.height) {
+								sharedCanvas.width = viewport.width;
+								sharedCanvas.height = viewport.height;
+							}
+
+							// 渲染页面到 Canvas
+							await page.render({
+								canvasContext: ctx, 
+								viewport: viewport
+							}).promise;
+							
+							// 计算切分点
+							const splitRatio = findSplitRatio(ctx, sharedCanvas.width, sharedCanvas.height, config);
+							
+							// 显式清理页面资源
+							page.cleanup();
+
+							// 执行切分 (pdf-lib)
+							const [orig] = await newPdfDoc.copyPages(pdfDoc, [p]);
+							const { width, height } = orig.getSize();
+							const splitX = width * splitRatio;
+
+							// 添加左页
+							const leftP = await newPdfDoc.addPage(orig);
+							leftP.setCropBox(0, 0, splitX, height);
+							
+							// 添加右页 (需重新拷贝以获得独立引用)
+							const [rightRaw] = await newPdfDoc.copyPages(pdfDoc, [p]);
+							const rightP = await newPdfDoc.addPage(rightRaw);
+							rightP.setCropBox(splitX, 0, width - splitX, height);
+						}
+						
+						const newBytes = await newPdfDoc.save();
+						zip.file(file.name.replace(/\.pdf$/i, '') + '_A4.pdf', newBytes);
+						successCount++;
+						log(`✅ Done`, 'success');
+
+					} catch (err) {
+						log(`❌ Fail: ${err.message}`, 'error');
+						console.error(err);
+					} finally {
+						// 关键：销毁 PDF.js 任务对象以释放内存
+						if (loadingTask) {
+							await loadingTask.destroy();
+						}
+					}
+				}
+				
+				// 处理完成后缩小 Canvas 占用
+				sharedCanvas.width = 1;
+				sharedCanvas.height = 1;
+
+				if(successCount > 0) {
+					log(`Downloading...`, 'success');
+					const content = await zip.generateAsync({type:"blob"});
+					const downloadUrl = URL.createObjectURL(content);
+					const downloadLink = document.createElement('a');
+					downloadLink.href = downloadUrl;
+					downloadLink.download = "A3-to-2-A4-result.zip";
+					document.body.appendChild(downloadLink);
+					downloadLink.click();
+					document.body.removeChild(downloadLink);
+					// 延迟释放 URL 对象，确保下载触发
+					setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+				}
+			} catch (e) { 
+				log(`System error: ${e.message}`, 'error'); 
+			} finally {
+				log(`Finish！ ${successCount} files processed`, 'success');
+			}
+			}
+		});
+	</script>
+	
+	<style>
+		/* 滑块样式优化 */
+		.slider-thumb::-webkit-slider-thumb {
+			appearance: none;
+			height: 1.25rem;
+			width: 1.25rem;
+			border-radius: 50%;
+			background: #4f46e5;
+			cursor: pointer;
+			box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+			transition: all 0.2s ease;
+		}
 		
+		.slider-thumb::-webkit-slider-thumb:hover {
+			transform: scale(1.1);
+			box-shadow: 0 0 0 6px rgba(79, 70, 229, 0.2);
+		}
+		
+		/* 自定义滚动条 */
+		.custom-scrollbar::-webkit-scrollbar {
+			width: 4px;
+		}
+		.custom-scrollbar::-webkit-scrollbar-track {
+			background: transparent;
+		}
+		.custom-scrollbar::-webkit-scrollbar-thumb {
+			background-color: rgba(148, 163, 184, 0.3);
+			border-radius: 2px;
+		}
+		.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+			background-color: rgba(71, 85, 105, 0.5);
+		}
+		.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+			background-color: rgba(148, 163, 184, 0.5);
+		}
+		
+		/* 动画定义 */
+		@keyframes fadeIn {
+			from { opacity: 0; transform: translateY(5px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+		.animate-fadeIn {
+			animation: fadeIn 0.3s ease-out forwards;
+		}
+	</style>
+</body>
+</html>

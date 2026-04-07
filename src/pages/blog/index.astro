@@ -11,7 +11,9 @@ import FeaturedPost from '../../components/ui/card/FeaturedPost.astro';
 import { calculateReadingTimeFromHtml } from '../../lib/reading';
 
 const PAGE_SIZE = 6;
-const posts = (await getCollection('blog')).sort((a,b)=>+b.data.pubDate-+a.data.pubDate);
+const allPosts = (await getCollection('blog')).sort((a,b)=>+b.data.pubDate-+a.data.pubDate);
+// Filter to only show English posts (title contains English characters only)
+const posts = allPosts.filter(post => /^[a-zA-Z0-9\s\-!@#$%^&*()_+=[\]{}|;:'",.<>?/]+$/.test(post.data.title));
 const [featured, ...rest] = posts;
 const firstPagePosts = rest.slice(0, PAGE_SIZE);
 const totalPages = Math.max(1, Math.ceil(rest.length / PAGE_SIZE));
