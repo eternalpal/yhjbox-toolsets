@@ -32,7 +32,7 @@ const authorNameFromPosts = [...new Set(posts.map(p => p.data.author))].find(nam
 // 如果都没找到，使用默认作者
 const authorName = matchedAuthor?.name || authorNameFromPosts || defaultAuthor.name;
 ---
-<html lang="en" data-theme="dark" class="dark">
+<html lang="en" data-theme="light" class="light">
   <head>
     <BaseHead title={`Articles by ${authorName}`} description={`Posts written by ${authorName}`} />
   </head>

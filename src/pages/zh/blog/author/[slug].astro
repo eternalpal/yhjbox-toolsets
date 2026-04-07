@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 const { slug } = Astro.params;
 const posts = (await getCollection('blog')).filter((p) => slugify(p.data.author || defaultAuthor.name) === slug);
 ---
-<html lang="zh-CN" data-theme="dark" class="dark">
+<html lang="zh-CN" data-theme="light" class="light">
   <head>
     <BaseHead title={`作者: ${slug}`} description={`${slug} 的所有文章`} />
   </head>

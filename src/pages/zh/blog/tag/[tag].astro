@@ -23,7 +23,7 @@ const { tag } = Astro.params;
 const posts = (await getCollection('blog')).filter((p) => (p.data.tags || []).some(t => slugifyTag(t) === tag));
 const meta = getTagMeta(tag);
 ---
-<html lang="zh-CN" data-theme="dark" class="dark">
+<html lang="zh-CN" data-theme="light" class="light">
   <head>
     <BaseHead title={meta.title} description={meta.description} />
     <link rel="alternate" type="application/rss+xml" title={`标签: ${tag}  feed`} href={`/zh/rss/tag/${tag}.xml`} />
