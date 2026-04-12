@@ -12,14 +12,22 @@ interface Props {
 	image?: ImageMetadata;
 }
 
-// 生成canonical URL，确保英文版本作为主版本
-let canonicalPath = Astro.url.pathname;
-// 移除语言前缀，使用英文版本作为主版本
-if (canonicalPath.startsWith('/zh/')) {
-  canonicalPath = canonicalPath.replace('/zh', '');
-}
-const canonicalURL = new URL(canonicalPath, Astro.site);
-const absoluteUrl = new URL(Astro.url.pathname, Astro.site).toString();
+// hreflang 优化
+const pathname = Astro.url.pathname;
+
+// 判断语言
+const isZh = pathname.startsWith('/zh/');
+
+// 构造英文路径
+const enPath = isZh ? pathname.replace(/^\/zh/, '') : pathname;
+
+// 构造中文路径
+const zhPath = isZh ? pathname : `/zh${pathname}`;
+
+// 拼完整 URL
+const enUrl = new URL(enPath, Astro.site).href;
+const zhUrl = new URL(zhPath, Astro.site).href;
+
 const siteOrigin = Astro.site ?? new URL(Astro.url).origin;
 
 // 检查是否需要noindex
@@ -55,16 +63,12 @@ const imageUrl = new URL(image.src, siteOrigin).toString();
 <link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin />
 
 <!-- Canonical URL -->
-<link rel="canonical" href={canonicalURL} />
+<link rel="canonical" href={isZh ? zhUrl : enUrl} />
 
 <!-- hreflang 标签 -->
-<link rel="alternate" hreflang="en" href={canonicalURL} />
-{Astro.url.pathname.startsWith('/zh/') ? (
-  <link rel="alternate" hreflang="zh" href={absoluteUrl} />
-) : (
-  <link rel="alternate" hreflang="zh" href={new URL('/zh' + Astro.url.pathname, Astro.site)} />
-)}
-<link rel="alternate" hreflang="x-default" href={canonicalURL} />
+<link rel="alternate" hreflang="en" href={enUrl} />
+<link rel="alternate" hreflang="zh" href={zhUrl} />
+<link rel="alternate" hreflang="x-default" href={enUrl} />
 
 <!-- Robots -->
 {noindex ? (
@@ -86,7 +90,7 @@ const imageUrl = new URL(image.src, siteOrigin).toString();
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content={SITE_TITLE} />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content={absoluteUrl} />
+<meta property="og:url" content={isZh ? zhUrl : enUrl} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={imageUrl} />
@@ -95,7 +99,7 @@ const imageUrl = new URL(image.src, siteOrigin).toString();
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@guihubie" />
-<meta property="twitter:url" content={absoluteUrl} />
+<meta property="twitter:url" content={isZh ? zhUrl : enUrl} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={imageUrl} />
