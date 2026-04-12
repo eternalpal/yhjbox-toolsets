@@ -12,9 +12,22 @@ interface Props {
 	image?: ImageMetadata;
 }
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+// 生成canonical URL，确保英文版本作为主版本
+let canonicalPath = Astro.url.pathname;
+// 移除语言前缀，使用英文版本作为主版本
+if (canonicalPath.startsWith('/zh/')) {
+  canonicalPath = canonicalPath.replace('/zh', '');
+}
+const canonicalURL = new URL(canonicalPath, Astro.site);
 const absoluteUrl = new URL(Astro.url.pathname, Astro.site).toString();
 const siteOrigin = Astro.site ?? new URL(Astro.url).origin;
+
+// 检查是否需要noindex
+const noindex = Astro.url.pathname.includes('/tag/') 
+  || Astro.url.pathname.includes('/category/')
+  || Astro.url.pathname.includes('/author/')
+  || Astro.url.pathname.includes('/page/')
+  || Astro.url.pathname.includes('/404');
 
 const { title, description, image = FallbackImage } = Astro.props;
 const imageUrl = new URL(image.src, siteOrigin).toString();
@@ -44,8 +57,21 @@ const imageUrl = new URL(image.src, siteOrigin).toString();
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
+<!-- hreflang 标签 -->
+<link rel="alternate" hreflang="en" href={canonicalURL} />
+{Astro.url.pathname.startsWith('/zh/') ? (
+  <link rel="alternate" hreflang="zh" href={absoluteUrl} />
+) : (
+  <link rel="alternate" hreflang="zh" href={new URL('/zh' + Astro.url.pathname, Astro.site)} />
+)}
+<link rel="alternate" hreflang="x-default" href={canonicalURL} />
+
 <!-- Robots -->
-<meta name="robots" content="index,follow,max-image-preview:large" />
+{noindex ? (
+  <meta name="robots" content="noindex, follow" />
+) : (
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+)}
 
 <!-- Theme color (supports dark/light) -->
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
