@@ -10,7 +10,17 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.yhjtools.top',
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap({
+    changefreq: 'weekly',
+    priority: 0.7,
+    filter: (page) => {
+      // 排除不需要在sitemap中显示的页面
+      return !page.includes('/404/') && !page.includes('/page/');
+    },
+    canonicalURL: 'https://www.yhjtools.top'
+  })],
+  // 配置sitemap的lastmod
+  // 注意：Astro的sitemap集成会自动处理lastmod，不需要手动设置为true
   i18n: {
     locales: ['en', 'zh'],
     defaultLocale: 'en',
