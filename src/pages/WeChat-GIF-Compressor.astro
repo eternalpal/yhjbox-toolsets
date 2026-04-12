@@ -5,16 +5,16 @@ import Header from '../components/sections/Header.astro';
 ---
 
 <!doctype html>
-<html lang="zh-CN" data-theme="dark" class="dark">
+<html lang="en" data-theme="light" class="light">
 	<head>
-		<BaseHead title={`GIF 命令生成器 - 高质量压缩与抽帧`} description="生成专业的 FFmpeg GIF 优化命令，支持自动解析帧率、高质量调色板压缩。无需上传，本地处理。" />
+		<BaseHead title={`WeChat GIF Compressor`} description="Optimize GIFs for WeChat with professional FFmpeg commands. Supports automatic frame rate detection and high-quality palette compression. Process locally without upload." />
 		<style>
 			:root { 
-				--primary: #6366f1; /* 统一使用参考文档的 Indigo 色 */
+				--primary: #6366f1; /* Indigo color */
 				--primary-hover: #4f46e5;
 			}
 			
-			/* 整体背景切换 */
+			/* Overall background */
 			body {
 				background-color: #f8fafc; /* slate-50 */
 				color: #334155; /* slate-700 */
@@ -24,7 +24,7 @@ import Header from '../components/sections/Header.astro';
 				color: #f1f5f9; /* slate-100 */
 			}
 
-			/* 文件上传区 - 匹配参考文档的 dashed 风格 */
+			/* File upload area */
 			.file-drop { 
 				border: 2px dashed #cbd5e1; /* slate-300 */
 				border-radius: 12px; 
@@ -48,7 +48,7 @@ import Header from '../components/sections/Header.astro';
 			}
 			.file-drop input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 
-			/* 分析结果面板 - 匹配参考文档的 Info Box 风格 */
+			/* Info panel */
 			.info-panel { 
 				display: none; 
 				background: rgba(99, 102, 241, 0.05); /* primary/5 */
@@ -61,7 +61,7 @@ import Header from '../components/sections/Header.astro';
 			.info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-size: 13px; margin-top: 8px; }
 			.info-item span { font-weight: bold; color: var(--primary); font-family: ui-monospace, monospace; }
 
-			/* 参数设置区 */
+			/* Parameter settings */
 			.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
 			label { display: block; font-size: 14px; font-weight: 700; margin-bottom: 8px; color: #64748b; text-transform: uppercase; letter-spacing: 0.025em; }
 			:global(.dark) label { color: #94a3b8; }
@@ -85,9 +85,9 @@ import Header from '../components/sections/Header.astro';
 			}
 			input:focus, select:focus { border-color: var(--primary); ring: 2px var(--primary); }
 
-			/* 命令展示盒 - 保持深色终端感但调整边框 */
+			/* Command display box */
 			.cmd-box { 
-				background: #0f172a; /* 深蓝色背景保持命令可读性 */
+				background: #0f172a; /* Dark blue background for command readability */
 				border: 1px solid #1e293b;
 				border-radius: 12px; 
 				padding: 20px; 
@@ -98,7 +98,7 @@ import Header from '../components/sections/Header.astro';
 			.cmd-label { color: #94a3b8; font-size: 11px; margin-bottom: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; }
 			#commandOutput { color: #38bdf8; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 14px; word-break: break-all; line-height: 1.6; margin: 0; }
 
-			/* 按钮 - 匹配参考文档的阴影和圆角 */
+			/* Buttons */
 			button { 
 				width: 100%; 
 				background: var(--primary); 
@@ -119,7 +119,7 @@ import Header from '../components/sections/Header.astro';
 				box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.3);
 			}
 
-			/* 使用说明教程 - 匹配参考文档的 Section 风格 */
+			/* How to use section */
 			.how-to-use { margin-top: 48px; border-top: 1px solid #e2e8f0; padding-top: 32px; }
 			:global(.dark) .how-to-use { border-color: #1e293b; }
 			.step { margin-bottom: 24px; }
@@ -136,13 +136,13 @@ import Header from '../components/sections/Header.astro';
 	<main>
 		<section class="py-12 px-4 bg-slate-50 dark:bg-slate-900/30">
 			<div class="max-w-3xl mx-auto">
-				<h1 class="text-3xl md:text-5xl font-extrabold text-center mb-4 text-slate-900 dark:text-white">GIF 命令生成器</h1>
-				<p class="text-center text-slate-500 dark:text-slate-400 mb-10 font-medium">解析 GIF 二进制信息，生成专业的 FFmpeg 优化指令</p>
+				<h1 class="text-3xl md:text-5xl font-extrabold text-center mb-4 text-slate-900 dark:text-white">WeChat GIF Compressor</h1>
+				<p class="text-center text-slate-500 dark:text-slate-400 mb-10 font-medium">Generate professional FFmpeg commands to optimize GIFs for WeChat</p>
 				
-				<!-- 模拟参考文档的 card-surface 样式 -->
+				<!-- Card surface -->
 				<div class="bg-white dark:bg-slate-800 p-8 shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200 dark:border-slate-700 rounded-2xl">
 					
-					<!-- 1. 文件选择 -->
+					<!-- 1. File Selection -->
 					<div class="mb-8">
 						<div class="file-drop" id="dropZone">
 							<input type="file" id="fileInput" accept="image/gif">
@@ -150,71 +150,71 @@ import Header from '../components/sections/Header.astro';
 								<div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 rounded-full flex items-center justify-center">
 									<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
 								</div>
-								<span id="dropText" class="font-bold text-slate-700 dark:text-slate-200">点击或拖拽 GIF 文件到此处</span>
+								<span id="dropText" class="font-bold text-slate-700 dark:text-slate-200">Click or drag GIF files here</span>
 							</div>
 						</div>
 					</div>
 
-					<!-- 2. 信息面板 -->
+					<!-- 2. Info Panel -->
 					<div id="infoPanel" class="info-panel">
 						<div class="info-grid">
-							<div class="info-item">📄 文件名: <span id="infoName">-</span></div>
-							<div class="info-item">📏 尺寸: <span id="infoResolution">-</span></div>
-							<div class="info-item">⏱️ 原帧率: <span id="infoFps">-</span> FPS</div>
-							<div class="info-item">🎞️ 总帧数: <span id="infoFrames">-</span></div>
+							<div class="info-item">📄 File: <span id="infoName">-</span></div>
+							<div class="info-item">📏 Size: <span id="infoResolution">-</span></div>
+							<div class="info-item">⏱️ FPS: <span id="infoFps">-</span> FPS</div>
+							<div class="info-item">🎞️ Frames: <span id="infoFrames">-</span></div>
 						</div>
 					</div>
 
-					<!-- 3. 参数设置 -->
+					<!-- 3. Parameter Settings -->
 					<div class="input-row">
 						<div>
-							<label>控制帧率 (FPS)</label>
+							<label>Frame Rate (FPS)</label>
 							<select id="fpsMode">
-								<option value="fps_10" selected>强制降至 10 FPS (网页标准)</option>
-								<option value="drop_2">✂️ 抽掉一半帧数 (Ezgif模式)</option>
-								<option value="drop_3">✂️ 保留 1/3 帧数</option>
-								<option value="custom">手动指定 FPS</option>
+								<option value="fps_10" selected>Force 10 FPS (Web standard)</option>
+								<option value="drop_2">✂️ Drop half frames (Ezgif mode)</option>
+								<option value="drop_3">✂️ Keep 1/3 frames</option>
+								<option value="custom">Custom FPS</option>
 							</select>
-							<input type="number" id="customFps" style="display:none; margin-top:10px;" placeholder="输入 FPS 数值">
+							<input type="number" id="customFps" style="display:none; margin-top:10px;" placeholder="Enter FPS">
 						</div>
 						<div>
-							<label>宽度 (WIDTH)</label>
-							<input type="number" id="width" placeholder="留空保持原大小">
+							<label>Width</label>
+							<input type="number" id="width" placeholder="Leave blank to keep original size">
 						</div>
 					</div>
 
-					<!-- 4. 命令显示 -->
+					<!-- 4. Command Display -->
 					<div class="cmd-box">
 						<div class="cmd-label">Ready to Copy</div>
-						<p id="commandOutput">请先在上方上传 GIF 文件...</p>
+						<p id="commandOutput">Please upload a GIF file above...</p>
 					</div>
 
-					<button id="copyBtn">📋 复制 FFmpeg 命令</button>
+					<button id="copyBtn">📋 Copy FFmpeg Command</button>
 
-					<!-- 5. 详细教程 -->
+					<!-- 5. How to Use -->
 					<div class="how-to-use">
 						<h3 class="text-xl font-black mb-6 flex items-center gap-2">
 							<span class="w-2 h-6 bg-primary rounded-full"></span>
-							快速使用说明
+							Quick Start Guide
 						</h3>
 						
 						<div class="grid md:grid-cols-1 gap-4">
 							<div class="step">
-								<div class="step-title"><span class="step-num">1</span> 下载 FFmpeg</div>
-								<p class="step-desc">下载<a href="https://pan.quark.cn/s/457e5863498e" target="_blank" class="text-primary font-bold hover:underline">FFmpeg</a> 压缩包，解压并将 <b>ffmpeg.exe</b> 放入图片所在文件夹。</p>
-								<!-- <div class="placeholder-img">放置 ffmpeg.exe 示意图</div> -->
+								<div class="step-title"><span class="step-num">1</span> Download FFmpeg</div>
+								<p class="step-desc">Download <a href="https://ffmpeg.org/download.html" target="_blank" class="text-primary font-bold hover:underline">FFmpeg</a>, extract it, and place <b>ffmpeg.exe</b> in the same folder as your images.</p>
+								<!-- <div class="placeholder-img">FFmpeg placement example</div> -->
 							</div>
 
 							<div class="step">
-								<div class="step-title"><span class="step-num">2</span> 生成并复制命令</div>
-								<p class="step-desc">在本工具上传 GIF 并根据需要调整 FPS 或宽度，点击上方蓝色按钮复制生成的命令。</p>
-								<!-- <div class="placeholder-img">复制按钮位置示意图</div> -->
+								<div class="step-title"><span class="step-num">2</span> Generate and Copy Command</div>
+								<p class="step-desc">Upload your GIF in this tool, adjust FPS or width if needed, then click the blue button above to copy the generated command.</p>
+								<!-- <div class="placeholder-img">Copy button location</div> -->
 							</div>
 
 							<div class="step">
-								<div class="step-title"><span class="step-num">3</span> 终端运行</div>
-								<p class="step-desc">在图片文件夹内打开 <b>终端/CMD</b>，粘贴命令并回车，优化后的 GIF 将立即生成。</p>
-								<!-- <div class="placeholder-img">终端执行效果示意图</div> -->
+								<div class="step-title"><span class="step-num">3</span> Run in Terminal</div>
+								<p class="step-desc">Open <b>Terminal/CMD</b> in the image folder, paste the command, and press Enter. The optimized GIF will be generated immediately.</p>
+								<!-- <div class="placeholder-img">Terminal execution example</div> -->
 							</div>
 						</div>
 					</div>
@@ -225,7 +225,7 @@ import Header from '../components/sections/Header.astro';
 	<Footer />
 
 	<script is:inline>
-		// --- 保持原有逻辑不变 ---
+		// --- Keep original logic --- 
 		const fileInput = document.getElementById('fileInput');
 		const infoPanel = document.getElementById('infoPanel');
 		const fpsMode = document.getElementById('fpsMode');
@@ -258,7 +258,7 @@ import Header from '../components/sections/Header.astro';
 		async function parseGif(file) {
 			const buffer = await file.arrayBuffer();
 			const data = new Uint8Array(buffer);
-			if (data[0] !== 0x47 || data[1] !== 0x49 || data[2] !== 0x46) throw new Error("无效GIF");
+			if (data[0] !== 0x47 || data[1] !== 0x49 || data[2] !== 0x46) throw new Error("Invalid GIF");
 
 			let offset = 6;
 			const width = data[offset] | (data[offset+1] << 8);
@@ -309,7 +309,7 @@ import Header from '../components/sections/Header.astro';
 				document.getElementById('infoFrames').innerText = info.frameCount;
 				updateCommand();
 			} catch (err) {
-				console.error("解析失败", err);
+				console.error("Parse failed", err);
 			}
 		});
 
@@ -323,7 +323,7 @@ import Header from '../components/sections/Header.astro';
 		copyBtn.addEventListener('click', async () => {
 			await navigator.clipboard.writeText(commandOutput.innerText);
 			const originalText = copyBtn.innerText;
-			copyBtn.innerText = "✅ 复制成功，去 CMD 运行吧";
+			copyBtn.innerText = "✅ Copied! Run in CMD";
 			copyBtn.classList.add('success');
 			setTimeout(() => {
 				copyBtn.innerText = originalText;

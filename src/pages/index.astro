@@ -8,12 +8,14 @@ import SkillsSection from '../components/sections/SkillsSection.astro';
 import { skills } from '../data/skills';
 import ArrowSeparator from '../components/ui/separator/ArrowSeparator.astro'
 import { defaultAuthor } from '../data/author';
+import { getLangFromUrl } from '../i18n/utils';
 
+const lang = getLangFromUrl(Astro.url);
 // skills are imported from src/data/skills
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dark" class="dark">
+<html lang={lang === 'zh' ? 'zh-CN' : 'en'} data-theme="light" class="light">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
     <!-- JSON-LD: Organization -->
@@ -32,14 +34,11 @@ import { defaultAuthor } from '../data/author';
 	<body>
 		<Header />
 		<main>
-      <HeroSection
-        title="Welcome to yhjbox toolset"
-        subtitle="I build softwares that help work efficiently."
-      />
+      <HeroSection />
      
 
     <section class="py-4">
-      <SkillsSection title="Tools" skills={skills} />
+      <SkillsSection skills={skills} />
     </section>
 		</main>
 		<Footer />

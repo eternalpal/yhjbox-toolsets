@@ -1,14 +1,14 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/sections/Footer.astro';
-import Header from '../components/sections/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/sections/Footer.astro';
+import Header from '../../components/sections/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 ---
 
 <!doctype html>
-<html lang="zh-CN" data-theme="dark" class="dark">
+<html lang="zh-CN" data-theme="light" class="light">
 	<head>
-		<BaseHead title={`Composition Grid Generator: Primary School Essay Layout Tool`} description="Create primary school composition grid paper layouts with automatic formatting, pagination, and export options (PDF, image, Word)." />
+		<BaseHead title={`在线作文格子排版生成器 - 纯文本一键转标准稿纸、带修正栏打印`} description="创建作文格子纸排版，支持自动格式化、分页和导出功能（PDF、图片、Word）。" />
 		<!-- 引入 jsPDF 库 -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 	</head>
@@ -32,23 +32,23 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		<main>
 			<section class="py-1 px-4">
 				<div class="max-w-6xl mx-auto">
-					<!-- Language Switch Link -->
+					<!-- 语言切换链接 -->
 					<div class="flex justify-end mb-4">
-						<a href="/composition-grid-generator-zh" class="text-sm text-primary hover:underline">中文</a>
+						<a href="/Online-Essay-Grid-Layout-Generator" class="text-sm text-primary hover:underline">English</a>
 					</div>
-					<h1 class="text-3xl md:text-4xl font-bold text-center mb-8">Composition Grid Generator v1.0</h1>
+					<h1 class="text-3xl md:text-4xl font-bold text-center mb-8">在线作文格子排版生成器V1.0</h1>
 					<div class="card-surface p-8">
 						
 						<div class="flex flex-col md:flex-row gap-10">
 							<div class="md:w-[380px] flex-shrink-0">
-								<div class="text-lg font-bold mb-4">Input Text</div>
+								<div class="text-lg font-bold mb-4">输入文字</div>
 								<textarea id="inputText" placeholder="请在此输入作文内容..." class="w-full min-h-[180px] p-3 border border-gray-300 dark:border-gray-700 rounded-lg resize-vertical text-sm"></textarea>
 								
 								<div class="mt-5 space-y-2">
 									<button class="w-full py-2.5 bg-green-600 text-white rounded-lg font-bold text-lg hover:bg-green-700 transition-colors" onclick="generateLayout()">1. 预览排版 (自动处理格式)</button>
-									<button class="w-full py-2.5 bg-red-500 text-white rounded-lg font-bold text-lg hover:bg-red-600 transition-colors" onclick="exportPDF()">2. 导出 PDF (适合A4打印)</button>
-									<button class="w-full py-2.5 bg-yellow-500 text-white rounded-lg font-bold text-lg hover:bg-yellow-600 transition-colors" onclick="exportImage()">3. 导出长图 (适合手机查看)</button>
-									<button class="w-full py-2.5 bg-blue-500 text-white rounded-lg font-bold text-lg hover:bg-blue-600 transition-colors" onclick="exportWord()">4. 导出 Word (防错位版)</button>
+									<button class="btn-pdf w-full py-2.5 bg-red-500 text-white rounded-lg font-bold text-lg hover:bg-red-600 transition-colors" onclick="exportPDF()">2. 导出 PDF (适合A4打印)</button>
+									<button class="btn-img w-full py-2.5 bg-yellow-500 text-white rounded-lg font-bold text-lg hover:bg-yellow-600 transition-colors" onclick="exportImage()">3. 导出长图 (适合手机查看)</button>
+									<button class="btn-word w-full py-2.5 bg-blue-500 text-white rounded-lg font-bold text-lg hover:bg-blue-600 transition-colors" onclick="exportWord()">4. 导出 Word (防错位版)</button>
 								</div>
 								
 								<div class="mt-5 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
@@ -65,7 +65,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 							</div>
 							
 							<div class="flex-1">
-								<div class="text-lg font-bold mb-4">Preview</div>
+								<div class="text-lg font-bold mb-4">预览效果</div>
 								<div id="previewContainer" class="bg-slate-200 dark:bg-slate-700/50 p-4 rounded-lg min-h-[400px] flex flex-col items-center justify-center"></div>
 							</div>
 						</div>
@@ -80,22 +80,22 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 				<!-- Features Section -->
 				<div class="mb-12">
 					<h2 class="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100 flex items-center justify-center gap-3">
-					✅ Features
+					✅ 功能特点
 					</h2>
 					<div class="grid md:grid-cols-2 gap-6">
 						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
 							<ul class="space-y-3 text-slate-600 dark:text-slate-300">
 								<li class="flex items-start gap-3">
 									<span class="text-green-500 mt-1">✓</span>
-									<span>Automatic title centering for first paragraph</span>
+									<span>第一段自动居中作为标题</span>
 								</li>
 								<li class="flex items-start gap-3">
 									<span class="text-green-500 mt-1">✓</span>
-									<span>Two-space indentation for subsequent paragraphs</span>
+									<span>后续段落自动段首缩进两格</span>
 								</li>
 								<li class="flex items-start gap-3">
 									<span class="text-green-500 mt-1">✓</span>
-									<span>Chinese typographic rules (no punctuation at line start)</span>
+									<span>中文排版规则（行首不出现标点）</span>
 								</li>
 							</ul>
 						</div>
@@ -103,15 +103,15 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 							<ul class="space-y-3 text-slate-600 dark:text-slate-300">
 								<li class="flex items-start gap-3">
 									<span class="text-green-500 mt-1">✓</span>
-									<span>Multiple export formats: PDF, image, Word</span>
+									<span>多种导出格式：PDF、图片、Word</span>
 								</li>
 								<li class="flex items-start gap-3">
 									<span class="text-green-500 mt-1">✓</span>
-									<span>100-character markers for easy counting</span>
+									<span>每100字自动标记，方便计数</span>
 								</li>
 								<li class="flex items-start gap-3">
 									<span class="text-green-500 mt-1">✓</span>
-									<span>A4 size optimized for printing</span>
+									<span>A4尺寸优化，适合打印</span>
 								</li>
 							</ul>
 						</div>
@@ -122,20 +122,20 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 				
 				<!-- Use Cases Section -->
 				<div class="mb-12">
-					<h2 class="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">✅ Use Cases</h2>
+					<h2 class="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">✅ 适用场景</h2>
 					<div class="text-center mb-6">
-						<p class="text-lg text-slate-600 dark:text-slate-300 font-medium">Perfect for:</p>
+						<p class="text-lg text-slate-600 dark:text-slate-300 font-medium">适用于：</p>
 					</div>
 					<div class="grid md:grid-cols-2 gap-6">
 						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
 							<ul class="space-y-3 text-slate-600 dark:text-slate-300">
 								<li class="flex items-start gap-3">
 									<span class="text-blue-500 mt-1">•</span>
-									<span>Primary school essay writing practice</span>
+									<span>小学作文写作练习</span>
 								</li>
 								<li class="flex items-start gap-3">
 									<span class="text-blue-500 mt-1">•</span>
-									<span>Chinese language homework assignments</span>
+									<span>语文作业布置</span>
 								</li>
 							</ul>
 						</div>
@@ -143,11 +143,11 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 							<ul class="space-y-3 text-slate-600 dark:text-slate-300">
 								<li class="flex items-start gap-3">
 									<span class="text-blue-500 mt-1">•</span>
-									<span>Classroom writing exercises</span>
+									<span>课堂写作练习</span>
 								</li>
 								<li class="flex items-start gap-3">
 									<span class="text-blue-500 mt-1">•</span>
-									<span>Teacher grading and feedback</span>
+									<span>教师批改和反馈</span>
 								</li>
 							</ul>
 						</div>
@@ -158,12 +158,12 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 				
 				<!-- CTA Section -->
 				<div class="text-center mb-12">
-					<h2 class="text-2xl font-bold mb-4 text-slate-800 dark:text-slate-100">✅ CTA</h2>
+					<h2 class="text-2xl font-bold mb-4 text-slate-800 dark:text-slate-100">✅ 立即使用</h2>
 					<div class="bg-gradient-to-r from-primary to-blue-600 rounded-2xl p-8 shadow-lg">
-						<h3 class="text-3xl font-bold text-white mb-4">Create Composition Grids Now — Free</h3>
-						<p class="text-blue-100 text-lg mb-6">Start creating professional composition grid layouts instantly</p>
+						<h3 class="text-3xl font-bold text-white mb-4">免费创建作文格子纸</h3>
+						<p class="text-blue-100 text-lg mb-6">立即开始创建专业的作文格子纸排版</p>
 						<button onclick="window.location.href = '#'" class="bg-white text-primary font-bold px-8 py-3 rounded-lg hover:bg-slate-100 transition-colors shadow-lg">
-							Get Started
+							开始使用
 						</button>
 					</div>
 				</div>
@@ -172,23 +172,23 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 				
 				<!-- FAQ Section -->
 				<div>
-					<h2 class="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">✅ FAQ</h2>
+					<h2 class="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">✅ 常见问题</h2>
 					<div class="space-y-6">
 						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
-							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">How many characters can I input?</h3>
-							<p class="text-slate-600 dark:text-slate-300">The tool automatically paginates your content, so you can input as much as needed. Each page contains 300 characters (15x20 grid).</p>
+							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">可以输入多少字？</h3>
+							<p class="text-slate-600 dark:text-slate-300">工具会自动分页，您可以输入任意数量的文字。每页包含300字（15×20格）。</p>
 						</div>
 						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
-							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">Can I export to Word format?</h3>
-							<p class="text-slate-600 dark:text-slate-300">Yes. The Word export embeds high-quality images of each page to prevent grid distortion.</p>
+							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">可以导出Word格式吗？</h3>
+							<p class="text-slate-600 dark:text-slate-300">可以。Word导出会嵌入高清图片，防止网格变形。</p>
 						</div>
 						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
-							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">Does it follow Chinese typographic rules?</h3>
-							<p class="text-slate-600 dark:text-slate-300">Yes. The tool automatically handles punctuation placement to ensure no punctuation appears at the start of a line.</p>
+							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">是否遵循中文排版规则？</h3>
+							<p class="text-slate-600 dark:text-slate-300">是的。工具会自动处理标点位置，确保标点不会出现在行首。</p>
 						</div>
 						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
-							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">Is the PDF optimized for printing?</h3>
-							<p class="text-slate-600 dark:text-slate-300">Yes. The PDF is generated in A4 size with high resolution, ready for direct printing.</p>
+							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">PDF是否适合打印？</h3>
+							<p class="text-slate-600 dark:text-slate-300">是的。PDF采用A4尺寸高分辨率生成，可直接打印。</p>
 						</div>
 					</div>
 				</div>
@@ -273,7 +273,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 						}
 					}
 
-					// 2. 绘制右侧“修正栏”表头
+					// 2. 绘制右侧"修正栏"表头
 					let headerHeight = BOX_SIZE + ROW_GAP;
 					ctx.strokeRect(startX + GRID_AREA_WIDTH, startY, CORRECTION_WIDTH, headerHeight);
 					
@@ -291,7 +291,6 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 				}
 
 				function generateLayout() {
-					console.log('generateLayout called');
 					const container = document.getElementById('previewContainer');
 					if (!container) {
 						console.error('previewContainer not found');
@@ -307,7 +306,6 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 						return;
 					}
 					let rawText = inputText.value;
-					console.log('Input text:', rawText);
 					if (!rawText.trim()) {
 						createNewPage();
 						return;
@@ -352,7 +350,6 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 					let currentFont = '26px "Kaiti", "KaiTi_GB2312", "STKaiti", serif';
 					let cellsPerPage = COL_COUNT * ROW_COUNT;
 					let totalPages = Math.ceil(gridCells.length / cellsPerPage);
-					console.log('Total pages:', totalPages);
 
 					for (let p = 0; p < totalPages; p++) {
 						let ctx = createNewPage();
@@ -391,17 +388,23 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 				function exportPDF() {
 					if (pageCanvases.length === 0) return alert("请先生成排版！");
 					
-					const { jsPDF } = window.jspdf;
-					const pdf = new jsPDF('p', 'mm', 'a4');
-					const pdfWidth = 210;
-					const pdfHeight = 297;
+					const btn = document.querySelector('.btn-pdf');
+					btn.innerText = "正在生成 PDF...";
+					
+					setTimeout(() => {
+						const { jsPDF } = window.jspdf;
+						const pdf = new jsPDF('p', 'mm', 'a4');
+						const pdfWidth = 210;
+						const pdfHeight = 297;
 
-					pageCanvases.forEach((canvas, index) => {
-						const imgData = canvas.toDataURL('image/jpeg', 0.75);
-						if (index > 0) pdf.addPage();
-						pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-					});
-					pdf.save('作文排版.pdf');
+						pageCanvases.forEach((canvas, index) => {
+							const imgData = canvas.toDataURL('image/jpeg', 0.75);
+							if (index > 0) pdf.addPage();
+							pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+						});
+						pdf.save('作文排版.pdf');
+						btn.innerText = "2. 导出 PDF (适合A4打印)";
+					}, 100);
 				}
 
 				function exportImage() {

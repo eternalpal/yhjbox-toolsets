@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../../../components/BaseHead.astro';
+import Header from '../../../../components/sections/Header.astro';
+import Footer from '../../../../components/sections/Footer.astro';
+import PostCard from '../../../../components/ui/card/PostCard.astro';
+import { slugifyTag as slugify } from '../../../../lib/slug';
+import { defaultAuthor } from '../../../../data/author';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const authors = [...new Set(posts.map((p) => p.data.author || defaultAuthor.name))];
+  return authors.map((author) => ({ params: { slug: slugify(author) } }));
+}
+
+const { slug } = Astro.params;
+const posts = (await getCollection('blog')).filter((p) => slugify(p.data.author || defaultAuthor.name) === slug);
+---
+<html lang="zh-CN" data-theme="light" class="light">
+  <head>
+    <BaseHead title={`作者: ${slug}`} description={`${slug} 的所有文章`} />
+  </head>
+  <body>
+    <Header />
+    <main class="mx-auto max-w-6xl px-4 py-10 space-y-6">
+      <h1 class="text-3xl font-bold">作者: {slug}</h1>
+      <div class="blog-grid">
+        {posts.map((p) => (
+          <PostCard post={p} />
+        ))}
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>
