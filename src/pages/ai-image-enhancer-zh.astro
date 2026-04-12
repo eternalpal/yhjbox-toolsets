@@ -5,9 +5,9 @@ import Header from '../components/sections/Header.astro';
 ---
 
 <!doctype html>
-<html lang="en" data-theme="light" class="light">
+<html lang="zh-CN" data-theme="dark" class="dark">
 	<head>
-		<BaseHead title={`Free AI Image Clear & Upscaler`} description="Upscale photos and anime images 4x using Real-ESRGAN. Free and unlimited." />
+		<BaseHead title={`免费 AI 图像清晰与放大工具`} description="使用 Real-ESRGAN 放大照片和动漫图像 4 倍。免费且无限制。" />
 		<style>
 			.spinner {
 				border: 4px solid rgba(255, 255, 255, 0.1);
@@ -38,7 +38,11 @@ import Header from '../components/sections/Header.astro';
 		<main>
 			<section class="py-1 px-4">
 				<div class="max-w-6xl mx-auto">
-					<h1 class="text-3xl md:text-4xl font-bold text-center mb-8">AI Image Clear & Upscaler </h1>
+					<!-- 语言切换链接 -->
+					<div class="flex justify-end mb-4">
+						<a href="/ai-image-enhancer" class="text-sm text-primary hover:underline">English</a>
+					</div>
+					<h1 class="text-3xl md:text-4xl font-bold text-center mb-8">AI 图像清晰与放大工具</h1>
 					
 					<div class="card-surface p-8">
 						<div class="w-full transition-all duration-300 mb-6 text-center">
@@ -49,21 +53,21 @@ import Header from '../components/sections/Header.astro';
                                     <div class="w-20 h-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mb-6 mx-auto">
                                         <svg class="w-10 h-10"><use href="#icon-upload"></use></svg>
                                     </div>
-                                    <h3 class="font-semibold text-xl mb-3">Upload Image to Upscale</h3>
+                                    <h3 class="font-semibold text-xl mb-3">上传图像进行放大</h3>
                                     
                                     <!-- 限制提示信息 -->
                                     <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700/50 rounded-lg p-3 max-w-sm mx-auto mb-6">
                                         <p class="text-sm text-yellow-700 dark:text-yellow-500 font-bold">
-                                            ⚠️ Limits for Fast Speed:
+                                            ⚠️ 快速处理限制：
                                         </p>
                                         <ul class="text-xs text-yellow-600 dark:text-yellow-400 mt-1 space-y-1">
-                                            <li>• Max Size: <strong>1 MB</strong></li>
-                                            <li>• Max Dimension: <strong>500 px</strong></li>
+                                            <li>• 最大大小：<strong>1 MB</strong></li>
+                                            <li>• 最大尺寸：<strong>500 px</strong></li>
                                         </ul>
                                     </div>
                                     
                                     <label for="file-upload" class="cursor-pointer inline-flex items-center justify-center gap-2 px-10 py-3 bg-primary text-white rounded-lg text-sm font-bold hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
-                                        <span>Choose File</span>
+                                        <span>选择文件</span>
                                         <input id="file-upload" type="file" accept="image/*" class="hidden" />
                                     </label>
                                 </div>
@@ -74,7 +78,7 @@ import Header from '../components/sections/Header.astro';
                                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-8 items-start">
                                         <!-- 原图 -->
                                         <div class="flex flex-col items-center md:col-span-1">
-                                            <span class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">Original</span>
+                                            <span class="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wide">原图</span>
                                             <div class="relative group w-full bg-black/5 dark:bg-white/5 rounded-lg overflow-hidden flex justify-center">
                                                 <img id="preview-image" class="h-auto max-h-[400px] object-contain" />
                                             </div>
@@ -85,41 +89,41 @@ import Header from '../components/sections/Header.astro';
                                         
                                         <!-- 结果图 -->
                                         <div class="flex flex-col items-center md:col-span-2 relative min-h-[300px] bg-black/5 dark:bg-white/5 rounded-xl border border-gray-200 dark:border-gray-700 p-2">
-                                            <span class="text-sm font-bold text-primary mb-2 uppercase tracking-wide">Upscaled Result (4x)</span>
+                                            <span class="text-sm font-bold text-primary mb-2 uppercase tracking-wide">放大结果 (4x)</span>
                                             
                                             <!-- 结果图 -->
                                             <img id="result-image" crossorigin="anonymous" class="hidden w-full h-auto max-h-[500px] object-contain z-10" />
                                             
                                             <!-- 结果信息 -->
                                             <div id="result-info" class="hidden mt-3 text-sm text-primary font-mono bg-primary/10 px-3 py-1.5 rounded border border-primary/20">
-                                                Calculating size...
+                                                计算尺寸中...
                                             </div>
                                             
                                             <!-- 加载动画 -->
                                             <div id="loading-spinner" class="hidden flex flex-col items-center justify-center absolute inset-0 z-0">
                                                 <div class="spinner border-primary mb-3"></div>
-                                                <p class="text-sm text-gray-500 animate-pulse font-medium" id="status-text">Ready</p>
+                                                <p class="text-sm text-gray-500 animate-pulse font-medium" id="status-text">就绪</p>
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- 模型选择 -->
                                     <div class="flex justify-center items-center gap-6 mb-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                                        <span class="font-bold text-sm mr-2">Mode:</span>
+                                        <span class="font-bold text-sm mr-2">模式：</span>
                                         <label class="flex items-center gap-2 cursor-pointer">
                                             <input type="radio" name="model_type" value="base" checked class="w-4 h-4 text-primary accent-primary">
-                                            <span class="text-sm">Photo (Base)</span>
+                                            <span class="text-sm">照片 (基础)</span>
                                         </label>
                                         <label class="flex items-center gap-2 cursor-pointer">
                                             <input type="radio" name="model_type" value="anime" class="w-4 h-4 text-primary accent-primary">
-                                            <span class="text-sm">Anime / Cartoon</span>
+                                            <span class="text-sm">动漫 / 卡通</span>
                                         </label>
                                     </div>
 
                                     <!-- 按钮栏 -->
                                     <div class="flex flex-wrap justify-center gap-4 w-full border-t border-gray-200 dark:border-gray-700 pt-6">
                                         <button id="enhance-btn" class="inline-flex items-center justify-center gap-2 px-8 py-3 bg-green-600 text-white rounded-lg text-sm font-bold hover:bg-green-700 transition-colors shadow-lg shadow-green-600/20 disabled:opacity-50 disabled:cursor-not-allowed">
-                                            Start Upscaling
+                                            开始放大
                                         </button>
 
                                         <div id="download-group" class="hidden flex gap-2">
@@ -132,14 +136,14 @@ import Header from '../components/sections/Header.astro';
                                         </div>
 
                                         <button id="reset-btn" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-white rounded-lg text-sm font-bold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
-                                            Reset
+                                            重置
                                         </button>
                                     </div>
                                     
                                     <p id="error-msg" class="text-red-500 text-sm mt-4 hidden font-medium text-center bg-red-50 dark:bg-red-900/20 p-2 rounded"></p>
                                 </div>
 
-								<p class="text-center text-gray-500 text-sm mt-6">Powered by Real-ESRGAN</p>
+								<p class="text-center text-gray-500 text-sm mt-6">由 Real-ESRGAN 提供技术支持</p>
 							</div>
 						</div>
 					</div>
@@ -152,22 +156,22 @@ import Header from '../components/sections/Header.astro';
 				<!-- Features Section -->
 				<div class="mb-12">
 					<h2 class="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100 flex items-center justify-center gap-3">
-					✅Features
+					✅ 功能特点
 					</h2>
 					<div class="grid md:grid-cols-2 gap-6">
 						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
 							<ul class="space-y-3 text-slate-600 dark:text-slate-300">
 								<li class="flex items-start gap-3">
 									<span class="text-green-500 mt-1">✓</span>
-									<span>AI-powered image enhancement</span>
+									<span>AI 驱动的图像增强</span>
 								</li>
 								<li class="flex items-start gap-3">
 									<span class="text-green-500 mt-1">✓</span>
-									<span>High-quality image upscaling</span>
+									<span>高质量图像放大</span>
 								</li>
 								<li class="flex items-start gap-3">
 									<span class="text-green-500 mt-1">✓</span>
-									<span>No signup, no watermark</span>
+									<span>无需注册，无水印</span>
 								</li>
 							</ul>
 						</div>
@@ -175,11 +179,11 @@ import Header from '../components/sections/Header.astro';
 							<ul class="space-y-3 text-slate-600 dark:text-slate-300">
 								<li class="flex items-start gap-3">
 									<span class="text-green-500 mt-1">✓</span>
-									<span>Works on Windows, macOS, and mobile</span>
+									<span>支持 Windows、macOS 和移动设备</span>
 								</li>
 								<li class="flex items-start gap-3">
 									<span class="text-green-500 mt-1">✓</span>
-									<span>Free to use online</span>
+									<span>免费在线使用</span>
 								</li>
 							</ul>
 						</div>
@@ -190,24 +194,24 @@ import Header from '../components/sections/Header.astro';
 				
 				<!-- Use Cases Section -->
 				<div class="mb-12">
-					<h2 class="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">✅ Use Cases</h2>
+					<h2 class="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">✅ 适用场景</h2>
 					<div class="text-center mb-6">
-						<p class="text-lg text-slate-600 dark:text-slate-300 font-medium">Perfect for:</p>
+						<p class="text-lg text-slate-600 dark:text-slate-300 font-medium">适用于：</p>
 					</div>
 					<div class="grid md:grid-cols-2 gap-6">
 						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
 							<ul class="space-y-3 text-slate-600 dark:text-slate-300">
 								<li class="flex items-start gap-3">
 									<span class="text-blue-500 mt-1">•</span>
-									<span>Enhancing old or blurry photos</span>
+									<span>增强老旧或模糊的照片</span>
 								</li>
 								<li class="flex items-start gap-3">
 									<span class="text-blue-500 mt-1">•</span>
-									<span>Upscaling low-resolution images</span>
+									<span>放大低分辨率图像</span>
 								</li>
 								<li class="flex items-start gap-3">
 									<span class="text-blue-500 mt-1">•</span>
-									<span>Improving product photos</span>
+									<span>改进产品照片</span>
 								</li>
 							</ul>
 						</div>
@@ -215,11 +219,11 @@ import Header from '../components/sections/Header.astro';
 							<ul class="space-y-3 text-slate-600 dark:text-slate-300">
 								<li class="flex items-start gap-3">
 									<span class="text-blue-500 mt-1">•</span>
-									<span>Enhancing digital art and illustrations</span>
+									<span>增强数字艺术和插图</span>
 								</li>
 								<li class="flex items-start gap-3">
 									<span class="text-blue-500 mt-1">•</span>
-									<span>Preparing images for printing</span>
+									<span>准备打印用的图像</span>
 								</li>
 							</ul>
 						</div>
@@ -230,12 +234,12 @@ import Header from '../components/sections/Header.astro';
 				
 				<!-- CTA Section -->
 				<div class="text-center mb-12">
-					<h2 class="text-2xl font-bold mb-4 text-slate-800 dark:text-slate-100">✅ CTA</h2>
+					<h2 class="text-2xl font-bold mb-4 text-slate-800 dark:text-slate-100">✅ 立即使用</h2>
 					<div class="bg-gradient-to-r from-primary to-blue-600 rounded-2xl p-8 shadow-lg">
-						<h3 class="text-3xl font-bold text-white mb-4">Enhance Your Images Now — Free</h3>
-						<p class="text-blue-100 text-lg mb-6">Start enhancing and upscaling your images with advanced AI technology instantly</p>
-						<button onclick="window.location.href = '#';" class="bg-white text-primary font-bold px-8 py-3 rounded-lg hover:bg-slate-100 transition-colors shadow-lg">
-							Start Enhancing
+						<h3 class="text-3xl font-bold text-white mb-4">立即增强您的图像 — 免费</h3>
+						<p class="text-blue-100 text-lg mb-6">使用先进的 AI 技术立即开始增强和放大您的图像</p>
+						<button onclick="window.location.href = '#'" class="bg-white text-primary font-bold px-8 py-3 rounded-lg hover:bg-slate-100 transition-colors shadow-lg">
+							开始增强
 						</button>
 					</div>
 				</div>
@@ -244,23 +248,23 @@ import Header from '../components/sections/Header.astro';
 				
 				<!-- FAQ Section -->
 				<div>
-					<h2 class="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">✅ FAQ</h2>
+					<h2 class="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">✅ 常见问题</h2>
 					<div class="space-y-6">
 						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
-							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">How does AI image enhancement work?</h3>
-							<p class="text-slate-600 dark:text-slate-300">Our tool uses advanced AI algorithms to analyze and improve images, enhancing details, colors, and overall quality.</p>
+							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">AI 图像增强如何工作？</h3>
+							<p class="text-slate-600 dark:text-slate-300">我们的工具使用先进的 AI 算法分析和改进图像，增强细节、色彩和整体质量。</p>
 						</div>
 						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
-							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">Is this image enhancer free?</h3>
-							<p class="text-slate-600 dark:text-slate-300">Yes. Our AI image enhancer is completely free to use with no registration required.</p>
+							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">这个图像增强工具是免费的吗？</h3>
+							<p class="text-slate-600 dark:text-slate-300">是的。我们的 AI 图像增强工具完全免费使用，无需注册。</p>
 						</div>
 						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
-							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">What image formats are supported?</h3>
-							<p class="text-slate-600 dark:text-slate-300">The tool supports common image formats such as JPG, PNG, and WebP.</p>
+							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">支持哪些图像格式？</h3>
+							<p class="text-slate-600 dark:text-slate-300">该工具支持常见的图像格式，如 JPG、PNG 和 WebP。</p>
 						</div>
 						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
-							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">Can I upscale images without losing quality?</h3>
-							<p class="text-slate-600 dark:text-slate-300">Yes. Our AI upscaling technology preserves details and enhances quality while increasing resolution.</p>
+							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">可以在不损失质量的情况下放大图像吗？</h3>
+							<p class="text-slate-600 dark:text-slate-300">是的。我们的 AI 放大技术在提高分辨率的同时保留细节并增强质量。</p>
 						</div>
 					</div>
 				</div>
@@ -345,7 +349,7 @@ import Header from '../components/sections/Header.astro';
 
                 // 体积校验 (FileSize Check)
                 if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
-                    alert(`File too large!\n\nCurrent: ${(file.size / 1024 / 1024).toFixed(2)} MB\nLimit: ${MAX_FILE_SIZE_MB} MB\n\nPlease use a smaller image for fast processing.`);
+                    alert(`文件太大！\n\n当前：${(file.size / 1024 / 1024).toFixed(2)} MB\n限制：${MAX_FILE_SIZE_MB} MB\n\n请使用较小的图像以加快处理速度。`);
                     fileInput.value = '';
                     return;
                 }
@@ -357,7 +361,7 @@ import Header from '../components/sections/Header.astro';
                     img.onload = () => {
                         // 尺寸校验 (Dimensions Check)
                         if (img.width > MAX_DIMENSION || img.height > MAX_DIMENSION) {
-                            alert(`Dimensions too large!\n\nCurrent: ${img.width} x ${img.height} px\nLimit: ${MAX_DIMENSION} x ${MAX_DIMENSION} px\n\nSince this is a 4x upscaler, input must be small to prevent server crash.`);
+                            alert(`尺寸太大！\n\n当前：${img.width} x ${img.height} px\n限制：${MAX_DIMENSION} x ${MAX_DIMENSION} px\n\n由于这是一个 4x 放大器，输入必须很小以防止服务器崩溃。`);
                             fileInput.value = '';
                             currentFile = null;
                             return;
@@ -406,14 +410,14 @@ import Header from '../components/sections/Header.astro';
                 downloadGroup.classList.add('hidden');
                 enhanceBtn.disabled = true;
                 enhanceBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                statusText.innerText = "Encoding image...";
+                statusText.innerText = "编码图像...";
                 errorMsg.classList.add('hidden');
 
                 try {
                     // 1. 转 Base64
                     const base64Image = await convertFileToBase64(currentFile);
                     
-                    statusText.innerText = "Processing (Wait ~10-20s)...";
+                    statusText.innerText = "处理中 (等待约 10-20 秒)...";
 
                     // 2. 构造请求 Payload
                     // 对应后端 inputs: [Image(type="pil"), Radio]
@@ -433,7 +437,7 @@ import Header from '../components/sections/Header.astro';
                     });
 
                     if (!response.ok) {
-                        throw new Error(`Server Error: ${response.status}`);
+                        throw new Error(`服务器错误：${response.status}`);
                     }
 
                     const json = await response.json();
@@ -453,28 +457,28 @@ import Header from '../components/sections/Header.astro';
                             finalUrl = `${SPACE_URL}/file=${outputData}`;
                         }
 
-                        console.log("Output URL:", finalUrl);
+                        console.log("输出 URL:", finalUrl);
 
                         resultImage.src = finalUrl;
                         resultImage.onload = () => {
                             resultImage.classList.remove('hidden');
                             loadingSpinner.classList.add('hidden');
-                            statusText.innerText = "Done!";
+                            statusText.innerText = "完成！";
                             downloadGroup.classList.remove('hidden');
                             enhanceBtn.classList.add('hidden');
                             updateImageDimensions(resultImage, resultInfo);
                         };
                         resultImage.onerror = () => {
-                            throw new Error("Failed to load result image");
+                            throw new Error("加载结果图像失败");
                         };
                     } else {
-                        throw new Error("Empty response from server");
+                        throw new Error("服务器返回空响应");
                     }
 
                 } catch (error) {
                     console.error(error);
-                    statusText.innerText = "Error";
-                    errorMsg.innerText = "Failed: " + error.message;
+                    statusText.innerText = "错误";
+                    errorMsg.innerText = "失败：" + error.message;
                     errorMsg.classList.remove('hidden');
                     loadingSpinner.classList.add('hidden');
                     enhanceBtn.disabled = false;

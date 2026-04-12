@@ -1,7 +1,7 @@
 export function slugifyTag(input: string | undefined | null): string {
   // ★★★ 新增：安全检查 ★★★
-  // 如果 input 是 undefined、null 或者空字符串，直接返回空串，不再继续执行
-  if (!input) return '';
+  // 如果 input 是 undefined、null 或者空字符串，返回'unknown'，避免构建错误
+  if (!input) return 'unknown';
 
   return encodeURIComponent(
     input

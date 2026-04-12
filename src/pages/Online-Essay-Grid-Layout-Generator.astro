@@ -1,0 +1,466 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/sections/Footer.astro';
+import Header from '../components/sections/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en" data-theme="light" class="light">
+	<head>
+		<BaseHead title={`Online Essay Grid Layout Generator - Convert Text to Standard Manuscript Paper`} description="Create primary school composition grid paper layouts with automatic formatting, pagination, and export options (PDF, image, Word)." />
+		<!-- 引入 jsPDF 库 -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+	</head>
+	<body>
+		<svg style="display: none;" aria-hidden="true">
+			<symbol id="icon-features" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+			</symbol>
+			<symbol id="icon-usecases" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+			</symbol>
+			<symbol id="icon-cta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+			</symbol>
+			<symbol id="icon-faq" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+			</symbol>
+		</svg>
+
+		<Header />
+		<main>
+			<section class="py-1 px-4">
+				<div class="max-w-6xl mx-auto">
+					<!-- Language Switch Link -->
+					<div class="flex justify-end mb-4">
+						<a href="/zh/Online-Essay-Grid-Layout-Generator" class="text-sm text-primary hover:underline">中文</a>
+					</div>
+					<h1 class="text-3xl md:text-4xl font-bold text-center mb-8">Online Essay Grid Layout Generator v1.0</h1>
+					<div class="card-surface p-8">
+						
+						<div class="flex flex-col md:flex-row gap-10">
+							<div class="md:w-[380px] flex-shrink-0">
+								<div class="text-lg font-bold mb-4">Input Text</div>
+								<textarea id="inputText" placeholder="请在此输入作文内容..." class="w-full min-h-[180px] p-3 border border-gray-300 dark:border-gray-700 rounded-lg resize-vertical text-sm"></textarea>
+								
+								<div class="mt-5 space-y-2">
+									<button class="w-full py-2.5 bg-green-600 text-white rounded-lg font-bold text-lg hover:bg-green-700 transition-colors" onclick="generateLayout()">1. 预览排版 (自动处理格式)</button>
+									<button class="w-full py-2.5 bg-red-500 text-white rounded-lg font-bold text-lg hover:bg-red-600 transition-colors" onclick="exportPDF()">2. 导出 PDF (适合A4打印)</button>
+									<button class="w-full py-2.5 bg-yellow-500 text-white rounded-lg font-bold text-lg hover:bg-yellow-600 transition-colors" onclick="exportImage()">3. 导出长图 (适合手机查看)</button>
+									<button class="w-full py-2.5 bg-blue-500 text-white rounded-lg font-bold text-lg hover:bg-blue-600 transition-colors" onclick="exportWord()">4. 导出 Word (防错位版)</button>
+								</div>
+								
+								<div class="mt-5 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
+									<span class="font-semibold mb-2 text-m">📖 使用说明</span>
+									<ul class="text-sm space-y-1.5 text-slate-600 dark:text-slate-300">
+										<li><strong>文字输入：</strong>在上方输入文字。系统会自动将【第一段】居中作为标题；从【第二段】起，自动在段首缩进两格。</li>
+										<li><strong>智能排版：</strong>自动遵循中文"避头尾"规则，逗号、句号等标点绝对不会出现在每行的第一个格子里。系统每满 100 格会自动进行标记。</li>
+										<li><strong>按钮 1：</strong>输入完毕后点击此按钮，系统会自动分配多页生成预览图。</li>
+										<li><strong>按钮 2：</strong>极速生成 A4 尺寸的多页 PDF 文件，画质高清且体积极小，直接发给打印机即可。</li>
+										<li><strong>按钮 3：</strong>将多页作文上下无缝拼接成一张长图片下载，方便在微信或手机中滑动查阅。</li>
+										<li><strong>按钮 4：</strong>为防止网格变形，系统会将排版好的高清图片分页嵌入到 Word 文档中导出。</li>
+									</ul>
+								</div>
+							</div>
+							
+							<div class="flex-1">
+								<div class="text-lg font-bold mb-4">Preview</div>
+								<div id="previewContainer" class="bg-slate-200 dark:bg-slate-700/50 p-4 rounded-lg min-h-[400px] flex flex-col items-center justify-center"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		
+		<!-- Additional Information Section -->
+		<section class="py-16 px-4 bg-slate-50 dark:bg-slate-900/30">
+			<div class="max-w-4xl mx-auto">
+				<!-- Features Section -->
+				<div class="mb-12">
+					<h2 class="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100 flex items-center justify-center gap-3">
+					✅ Features
+					</h2>
+					<div class="grid md:grid-cols-2 gap-6">
+						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+							<ul class="space-y-3 text-slate-600 dark:text-slate-300">
+								<li class="flex items-start gap-3">
+									<span class="text-green-500 mt-1">✓</span>
+									<span>Automatic title centering for first paragraph</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<span class="text-green-500 mt-1">✓</span>
+									<span>Two-space indentation for subsequent paragraphs</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<span class="text-green-500 mt-1">✓</span>
+									<span>Chinese typographic rules (no punctuation at line start)</span>
+								</li>
+							</ul>
+						</div>
+						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+							<ul class="space-y-3 text-slate-600 dark:text-slate-300">
+								<li class="flex items-start gap-3">
+									<span class="text-green-500 mt-1">✓</span>
+									<span>Multiple export formats: PDF, image, Word</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<span class="text-green-500 mt-1">✓</span>
+									<span>100-character markers for easy counting</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<span class="text-green-500 mt-1">✓</span>
+									<span>A4 size optimized for printing</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				
+				<hr class="my-12 border-slate-200 dark:border-slate-700">
+				
+				<!-- Use Cases Section -->
+				<div class="mb-12">
+					<h2 class="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">✅ Use Cases</h2>
+					<div class="text-center mb-6">
+						<p class="text-lg text-slate-600 dark:text-slate-300 font-medium">Perfect for:</p>
+					</div>
+					<div class="grid md:grid-cols-2 gap-6">
+						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+							<ul class="space-y-3 text-slate-600 dark:text-slate-300">
+								<li class="flex items-start gap-3">
+									<span class="text-blue-500 mt-1">•</span>
+									<span>Primary school essay writing practice</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<span class="text-blue-500 mt-1">•</span>
+									<span>Chinese language homework assignments</span>
+								</li>
+							</ul>
+						</div>
+						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+							<ul class="space-y-3 text-slate-600 dark:text-slate-300">
+								<li class="flex items-start gap-3">
+									<span class="text-blue-500 mt-1">•</span>
+									<span>Classroom writing exercises</span>
+								</li>
+								<li class="flex items-start gap-3">
+									<span class="text-blue-500 mt-1">•</span>
+									<span>Teacher grading and feedback</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				
+				<hr class="my-12 border-slate-200 dark:border-slate-700">
+				
+				<!-- CTA Section -->
+				<div class="text-center mb-12">
+					<h2 class="text-2xl font-bold mb-4 text-slate-800 dark:text-slate-100">✅ CTA</h2>
+					<div class="bg-gradient-to-r from-primary to-blue-600 rounded-2xl p-8 shadow-lg">
+						<h3 class="text-3xl font-bold text-white mb-4">Create Composition Grids Now — Free</h3>
+						<p class="text-blue-100 text-lg mb-6">Start creating professional composition grid layouts instantly</p>
+						<button onclick="window.location.href = '#'" class="bg-white text-primary font-bold px-8 py-3 rounded-lg hover:bg-slate-100 transition-colors shadow-lg">
+							Get Started
+						</button>
+					</div>
+				</div>
+				
+				<hr class="my-12 border-slate-200 dark:border-slate-700">
+				
+				<!-- FAQ Section -->
+				<div>
+					<h2 class="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">✅ FAQ</h2>
+					<div class="space-y-6">
+						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">How many characters can I input?</h3>
+							<p class="text-slate-600 dark:text-slate-300">The tool automatically paginates your content, so you can input as much as needed. Each page contains 300 characters (15x20 grid).</p>
+						</div>
+						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">Can I export to Word format?</h3>
+							<p class="text-slate-600 dark:text-slate-300">Yes. The Word export embeds high-quality images of each page to prevent grid distortion.</p>
+						</div>
+						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">Does it follow Chinese typographic rules?</h3>
+							<p class="text-slate-600 dark:text-slate-300">Yes. The tool automatically handles punctuation placement to ensure no punctuation appears at the start of a line.</p>
+						</div>
+						<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+							<h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-2">Is the PDF optimized for printing?</h3>
+							<p class="text-slate-600 dark:text-slate-300">Yes. The PDF is generated in A4 size with high resolution, ready for direct printing.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<Footer />
+		
+		<script>
+			window.addEventListener('DOMContentLoaded', function() {
+				// --- 核心参数配置 ---
+				const A4_WIDTH = 1050;
+				const A4_HEIGHT = 1485;
+				const PADDING_X = 60;
+				const PADDING_Y = 80;
+				
+				const COL_COUNT = 15;    // 每行 15 格
+				const ROW_COUNT = 20;    // 每页 20 行，总计 300 格
+				const ROW_GAP = 15;      // 行间距
+				const CORRECTION_WIDTH = 180; // 右侧修正栏宽度
+				
+				const CONTENT_WIDTH = A4_WIDTH - PADDING_X * 2;
+				const GRID_AREA_WIDTH = CONTENT_WIDTH - CORRECTION_WIDTH;
+				const BOX_SIZE = GRID_AREA_WIDTH / COL_COUNT;
+
+				// 避头尾规则
+				const FORBIDDEN_START_CHARS = /^[，。、；：？！”’》】\]\)\}.,?!;:]$/;
+
+				let pageCanvases = [];
+				let totalPagesCreated = 0;
+
+				function createNewPage() {
+					const canvas = document.createElement('canvas');
+					canvas.width = A4_WIDTH;
+					canvas.height = A4_HEIGHT;
+					canvas.className = 'canvas-page';
+					canvas.style.cssText = 'background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); max-width: 100%; height: auto; width: 75%;';
+					const ctx = canvas.getContext('2d');
+					
+					drawEmptyGrid(ctx, totalPagesCreated);
+					totalPagesCreated++;
+					
+					document.getElementById('previewContainer').appendChild(canvas);
+					pageCanvases.push(canvas);
+					
+					return ctx;
+				}
+
+				function drawEmptyGrid(ctx, pageIndex) {
+					ctx.fillStyle = '#ffffff';
+					ctx.fillRect(0, 0, A4_WIDTH, A4_HEIGHT);
+					
+					ctx.strokeStyle = '#999999';
+					ctx.lineWidth = 1.5;
+					
+					let startX = PADDING_X;
+					let startY = PADDING_Y;
+
+					// 1. 遍历绘制所有的正方格子，并同时处理字数标记
+					for (let r = 0; r < ROW_COUNT; r++) {
+						let currentY = startY + r * (BOX_SIZE + ROW_GAP);
+						
+						for (let c = 0; c < COL_COUNT; c++) {
+							let currentX = startX + c * BOX_SIZE;
+							ctx.strokeRect(currentX, currentY, BOX_SIZE, BOX_SIZE);
+
+							// 计算当前格子的物理总序号
+							let globalGridIndex = pageIndex * (ROW_COUNT * COL_COUNT) + (r * COL_COUNT + c) + 1;
+							
+							// 每逢 100 的倍数标记
+							if (globalGridIndex % 100 === 0) {
+								ctx.fillStyle = '#bbbbbb';
+								ctx.font = '12px "Arial", sans-serif';
+								ctx.textAlign = 'center';
+								ctx.textBaseline = 'middle';
+								
+								let textX = currentX + BOX_SIZE / 2;
+								let textY = currentY + BOX_SIZE + (ROW_GAP / 2);
+								
+								ctx.fillText(globalGridIndex.toString(), textX, textY);
+							}
+						}
+					}
+
+					// 2. 绘制右侧“修正栏”表头
+					let headerHeight = BOX_SIZE + ROW_GAP;
+					ctx.strokeRect(startX + GRID_AREA_WIDTH, startY, CORRECTION_WIDTH, headerHeight);
+					
+					ctx.fillStyle = '#333333';
+					ctx.font = 'bold 24px "Microsoft YaHei", sans-serif';
+					ctx.textAlign = 'center';
+					ctx.textBaseline = 'middle';
+					ctx.fillText("修 正 栏", startX + GRID_AREA_WIDTH + CORRECTION_WIDTH / 2, startY + headerHeight / 2);
+					
+					// 3. 绘制右侧下方的【合并大框】
+					let blankBoxTopY = startY + headerHeight;
+					let totalHeight = ROW_COUNT * BOX_SIZE + (ROW_COUNT - 1) * ROW_GAP;
+					let blankBoxHeight = totalHeight - headerHeight;
+					ctx.strokeRect(startX + GRID_AREA_WIDTH, blankBoxTopY, CORRECTION_WIDTH, blankBoxHeight);
+				}
+
+				function generateLayout() {
+					console.log('generateLayout called');
+					const container = document.getElementById('previewContainer');
+					if (!container) {
+						console.error('previewContainer not found');
+						return;
+					}
+					container.innerHTML = '';
+					pageCanvases = [];
+					totalPagesCreated = 0;
+					
+					let inputText = document.getElementById('inputText');
+					if (!inputText) {
+						console.error('inputText not found');
+						return;
+					}
+					let rawText = inputText.value;
+					console.log('Input text:', rawText);
+					if (!rawText.trim()) {
+						createNewPage();
+						return;
+					}
+
+					let gridCells = [];
+					let paragraphs = rawText.split('\n');
+					let isFirstPara = true;
+
+					for (let i = 0; i < paragraphs.length; i++) {
+						let para = paragraphs[i].replace(/^[\s\u3000]+|[\s\u3000]+$/g, '');
+						if (para === '') continue;
+
+						while (gridCells.length % COL_COUNT !== 0) {
+							gridCells.push("");
+						}
+
+						if (isFirstPara) {
+							if (para.length < COL_COUNT) {
+								let emptySpaces = Math.floor((COL_COUNT - para.length) / 2);
+								for (let s = 0; s < emptySpaces; s++) gridCells.push("");
+							}
+							for (let c = 0; c < para.length; c++) gridCells.push(para[c]);
+							isFirstPara = false;
+						} else {
+							gridCells.push("");
+							gridCells.push("");
+
+							for (let c = 0; c < para.length; c++) {
+								let char = para[c];
+								let isLineStart = (gridCells.length % COL_COUNT === 0);
+
+								if (isLineStart && FORBIDDEN_START_CHARS.test(char) && gridCells.length > 0) {
+									gridCells[gridCells.length - 1] += char;
+								} else {
+									gridCells.push(char);
+								}
+							}
+						}
+					}
+
+					let currentFont = '26px "Kaiti", "KaiTi_GB2312", "STKaiti", serif';
+					let cellsPerPage = COL_COUNT * ROW_COUNT;
+					let totalPages = Math.ceil(gridCells.length / cellsPerPage);
+					console.log('Total pages:', totalPages);
+
+					for (let p = 0; p < totalPages; p++) {
+						let ctx = createNewPage();
+						ctx.fillStyle = '#000000';
+						ctx.textAlign = 'center';
+						ctx.textBaseline = 'middle';
+
+						let startIndex = p * cellsPerPage;
+						let endIndex = Math.min(startIndex + cellsPerPage, gridCells.length);
+
+						for (let i = startIndex; i < endIndex; i++) {
+							let cellText = gridCells[i];
+							if (!cellText) continue;
+
+							let pageIndex = i - startIndex;
+							let r = Math.floor(pageIndex / COL_COUNT);
+							let c = pageIndex % COL_COUNT;
+
+							let x = PADDING_X + c * BOX_SIZE + BOX_SIZE / 2;
+							let y = PADDING_Y + r * (BOX_SIZE + ROW_GAP) + BOX_SIZE / 2;
+
+							if (cellText.length === 1) {
+								ctx.font = currentFont;
+								ctx.fillText(cellText, x, y);
+							} else {
+								ctx.font = currentFont;
+								ctx.fillText(cellText[0], x, y);
+								let puncs = cellText.substring(1);
+								ctx.font = '18px "Microsoft YaHei"';
+								ctx.fillText(puncs, x + BOX_SIZE * 0.35, y + BOX_SIZE * 0.25);
+							}
+						}
+					}
+				}
+
+				function exportPDF() {
+					if (pageCanvases.length === 0) return alert("请先生成排版！");
+					
+					const { jsPDF } = window.jspdf;
+					const pdf = new jsPDF('p', 'mm', 'a4');
+					const pdfWidth = 210;
+					const pdfHeight = 297;
+
+					pageCanvases.forEach((canvas, index) => {
+						const imgData = canvas.toDataURL('image/jpeg', 0.75);
+						if (index > 0) pdf.addPage();
+						pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+					});
+					pdf.save('作文排版.pdf');
+				}
+
+				function exportImage() {
+					if (pageCanvases.length === 0) return alert("请先生成排版！");
+					
+					const bigCanvas = document.createElement('canvas');
+					bigCanvas.width = A4_WIDTH;
+					bigCanvas.height = A4_HEIGHT * pageCanvases.length;
+					const bigCtx = bigCanvas.getContext('2d');
+					
+					pageCanvases.forEach((canvas, index) => {
+						bigCtx.drawImage(canvas, 0, index * A4_HEIGHT);
+					});
+					
+					const imgData = bigCanvas.toDataURL('image/jpeg', 0.85);
+					
+					const link = document.createElement('a');
+					link.href = imgData;
+					link.download = '作文排版_长图.jpg';
+					document.body.appendChild(link);
+					link.click();
+					document.body.removeChild(link);
+				}
+
+				function exportWord() {
+					if (pageCanvases.length === 0) return alert("请先生成排版！");
+					let imagesHtml = '';
+					pageCanvases.forEach((canvas) => {
+						const imgData = canvas.toDataURL('image/jpeg', 0.85);
+						imagesHtml += `
+							<div style="page-break-after: always; text-align: center;">
+								<img src="${imgData}" width="700" />
+							</div>
+						`;
+					});
+					const wordHtml = `
+						<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+						<head><meta charset='utf-8'><title>导出文档</title></head>
+						<body style="margin:0; padding:0;">${imagesHtml}</body>
+						</html>
+					`;
+					const blob = new Blob([wordHtml], { type: 'application/msword;charset=utf-8' });
+					const link = document.createElement('a');
+					link.href = URL.createObjectURL(blob);
+					link.download = '作文排版.doc';
+					document.body.appendChild(link);
+					link.click();
+					document.body.removeChild(link);
+				}
+
+				// 暴露函数到全局作用域
+				window.generateLayout = generateLayout;
+				window.exportPDF = exportPDF;
+				window.exportImage = exportImage;
+				window.exportWord = exportWord;
+
+				// 页面加载时自动生成空白格子
+				generateLayout();
+			});
+		</script>
+	</body>
+</html>

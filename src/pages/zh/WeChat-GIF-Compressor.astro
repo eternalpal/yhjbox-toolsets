@@ -1,0 +1,335 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/sections/Footer.astro';
+import Header from '../../components/sections/Header.astro';
+---
+
+<!doctype html>
+<html lang="zh-CN" data-theme="light" class="light">
+	<head>
+		<BaseHead title={`微信公众号 GIF 瘦身助手`} description="为微信公众号优化 GIF 文件大小，生成专业的 FFmpeg 命令，支持自动解析帧率、高质量调色板压缩。无需上传，本地处理。" />
+		<style>
+			:root { 
+				--primary: #6366f1; /* 统一使用参考文档的 Indigo 色 */
+				--primary-hover: #4f46e5;
+			}
+			
+			/* 整体背景切换 */
+			body {
+				background-color: #f8fafc; /* slate-50 */
+				color: #334155; /* slate-700 */
+			}
+			:global(.dark) body {
+				background-color: #0f172a; /* slate-900 */
+				color: #f1f5f9; /* slate-100 */
+			}
+
+			/* 文件上传区 - 匹配参考文档的 dashed 风格 */
+			.file-drop { 
+				border: 2px dashed #cbd5e1; /* slate-300 */
+				border-radius: 12px; 
+				padding: 30px; 
+				text-align: center; 
+				cursor: pointer; 
+				transition: all 0.3s; 
+				position: relative; 
+				background: #f8fafc; /* slate-50 */
+			}
+			:global(.dark) .file-drop {
+				border-color: #334155; /* slate-700 */
+				background: rgba(30, 41, 59, 0.5); /* slate-800/50 */
+			}
+			.file-drop:hover { 
+				border-color: var(--primary); 
+				background: #eff6ff; /* blue-50 */
+			}
+			:global(.dark) .file-drop:hover {
+				background: rgba(99, 102, 241, 0.1);
+			}
+			.file-drop input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+
+			/* 分析结果面板 - 匹配参考文档的 Info Box 风格 */
+			.info-panel { 
+				display: none; 
+				background: rgba(99, 102, 241, 0.05); /* primary/5 */
+				border: 1px solid rgba(99, 102, 241, 0.2); 
+				border-radius: 10px; 
+				padding: 15px; 
+				margin-bottom: 25px; 
+				border-left: 4px solid var(--primary); 
+			}
+			.info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-size: 13px; margin-top: 8px; }
+			.info-item span { font-weight: bold; color: var(--primary); font-family: ui-monospace, monospace; }
+
+			/* 参数设置区 */
+			.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+			label { display: block; font-size: 14px; font-weight: 700; margin-bottom: 8px; color: #64748b; text-transform: uppercase; letter-spacing: 0.025em; }
+			:global(.dark) label { color: #94a3b8; }
+			
+			input[type="number"], select { 
+				width: 100%; 
+				padding: 10px; 
+				border: 1px solid #e2e8f0; 
+				border-radius: 8px; 
+				font-size: 14px; 
+				outline: none; 
+				transition: all 0.2s; 
+				box-sizing: border-box; 
+				background: white; 
+				color: #1e293b; 
+			}
+			:global(.dark) input[type="number"], :global(.dark) select {
+				background: #1e293b;
+				border-color: #334155;
+				color: #f1f5f9;
+			}
+			input:focus, select:focus { border-color: var(--primary); ring: 2px var(--primary); }
+
+			/* 命令展示盒 - 保持深色终端感但调整边框 */
+			.cmd-box { 
+				background: #0f172a; /* 深蓝色背景保持命令可读性 */
+				border: 1px solid #1e293b;
+				border-radius: 12px; 
+				padding: 20px; 
+				margin-top: 25px; 
+				position: relative; 
+				box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+			}
+			.cmd-label { color: #94a3b8; font-size: 11px; margin-bottom: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; }
+			#commandOutput { color: #38bdf8; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 14px; word-break: break-all; line-height: 1.6; margin: 0; }
+
+			/* 按钮 - 匹配参考文档的阴影和圆角 */
+			button { 
+				width: 100%; 
+				background: var(--primary); 
+				color: white; 
+				border: none; 
+				padding: 14px; 
+				border-radius: 8px; 
+				font-size: 15px; 
+				font-weight: 700; 
+				cursor: pointer; 
+				transition: all 0.2s; 
+				margin-top: 15px; 
+				box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39);
+			}
+			button:hover { background: var(--primary-hover); transform: translateY(-1px); }
+			button.success { 
+				background: #10b981; 
+				box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.3);
+			}
+
+			/* 使用说明教程 - 匹配参考文档的 Section 风格 */
+			.how-to-use { margin-top: 48px; border-top: 1px solid #e2e8f0; padding-top: 32px; }
+			:global(.dark) .how-to-use { border-color: #1e293b; }
+			.step { margin-bottom: 24px; }
+			.step-title { font-weight: 800; font-size: 16px; margin-bottom: 8px; color: #1e293b; display: flex; align-items: center; }
+			:global(.dark) .step-title { color: #f1f5f9; }
+			.step-num { background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-right: 12px; font-weight: 900; }
+			.step-desc { font-size: 14px; color: #64748b; margin-bottom: 12px; line-height: 1.6; }
+			.placeholder-img { width: 100%; height: 160px; background: #f1f5f9; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 12px; font-weight: 500; }
+			:global(.dark) .placeholder-img { background: #1e293b; border-color: #334155; }
+		</style>
+	</head>
+
+	<Header />
+	<main>
+		<section class="py-12 px-4 bg-slate-50 dark:bg-slate-900/30">
+			<div class="max-w-3xl mx-auto">
+				<h1 class="text-3xl md:text-5xl font-extrabold text-center mb-4 text-slate-900 dark:text-white">微信公众号 GIF 瘦身助手</h1>
+				<p class="text-center text-slate-500 dark:text-slate-400 mb-10 font-medium">为微信公众号优化 GIF 文件大小，生成专业的 FFmpeg 命令</p>
+				
+				<!-- 模拟参考文档的 card-surface 样式 -->
+				<div class="bg-white dark:bg-slate-800 p-8 shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200 dark:border-slate-700 rounded-2xl">
+					
+					<!-- 1. 文件选择 -->
+					<div class="mb-8">
+						<div class="file-drop" id="dropZone">
+							<input type="file" id="fileInput" accept="image/gif">
+							<div class="flex flex-col items-center gap-3">
+								<div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 rounded-full flex items-center justify-center">
+									<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+								</div>
+								<span id="dropText" class="font-bold text-slate-700 dark:text-slate-200">点击或拖拽 GIF 文件到此处</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- 2. 信息面板 -->
+					<div id="infoPanel" class="info-panel">
+						<div class="info-grid">
+							<div class="info-item">📄 文件名: <span id="infoName">-</span></div>
+							<div class="info-item">📏 尺寸: <span id="infoResolution">-</span></div>
+							<div class="info-item">⏱️ 原帧率: <span id="infoFps">-</span> FPS</div>
+							<div class="info-item">🎞️ 总帧数: <span id="infoFrames">-</span></div>
+						</div>
+					</div>
+
+					<!-- 3. 参数设置 -->
+					<div class="input-row">
+						<div>
+							<label>控制帧率 (FPS)</label>
+							<select id="fpsMode">
+								<option value="fps_10" selected>强制降至 10 FPS (网页标准)</option>
+								<option value="drop_2">✂️ 抽掉一半帧数 (Ezgif模式)</option>
+								<option value="drop_3">✂️ 保留 1/3 帧数</option>
+								<option value="custom">手动指定 FPS</option>
+							</select>
+							<input type="number" id="customFps" style="display:none; margin-top:10px;" placeholder="输入 FPS 数值">
+						</div>
+						<div>
+							<label>宽度 (WIDTH)</label>
+							<input type="number" id="width" placeholder="留空保持原大小">
+						</div>
+					</div>
+
+					<!-- 4. 命令显示 -->
+					<div class="cmd-box">
+						<div class="cmd-label">Ready to Copy</div>
+						<p id="commandOutput">请先在上方上传 GIF 文件...</p>
+					</div>
+
+					<button id="copyBtn">📋 复制 FFmpeg 命令</button>
+
+					<!-- 5. 详细教程 -->
+					<div class="how-to-use">
+						<h3 class="text-xl font-black mb-6 flex items-center gap-2">
+							<span class="w-2 h-6 bg-primary rounded-full"></span>
+							快速使用说明
+						</h3>
+						
+						<div class="grid md:grid-cols-1 gap-4">
+							<div class="step">
+								<div class="step-title"><span class="step-num">1</span> 下载 FFmpeg</div>
+								<p class="step-desc">下载<a href="https://pan.quark.cn/s/457e5863498e" target="_blank" class="text-primary font-bold hover:underline">FFmpeg</a> 压缩包，解压并将 <b>ffmpeg.exe</b> 放入图片所在文件夹。</p>
+								<!-- <div class="placeholder-img">放置 ffmpeg.exe 示意图</div> -->
+							</div>
+
+							<div class="step">
+								<div class="step-title"><span class="step-num">2</span> 生成并复制命令</div>
+								<p class="step-desc">在本工具上传 GIF 并根据需要调整 FPS 或宽度，点击上方蓝色按钮复制生成的命令。</p>
+								<!-- <div class="placeholder-img">复制按钮位置示意图</div> -->
+							</div>
+
+							<div class="step">
+								<div class="step-title"><span class="step-num">3</span> 终端运行</div>
+								<p class="step-desc">在图片文件夹内打开 <b>终端/CMD</b>，粘贴命令并回车，优化后的 GIF 将立即生成。</p>
+								<!-- <div class="placeholder-img">终端执行效果示意图</div> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer />
+
+	<script is:inline>
+		// --- 保持原有逻辑不变 ---
+		const fileInput = document.getElementById('fileInput');
+		const infoPanel = document.getElementById('infoPanel');
+		const fpsMode = document.getElementById('fpsMode');
+		const customFps = document.getElementById('customFps');
+		const widthInput = document.getElementById('width');
+		const commandOutput = document.getElementById('commandOutput');
+		const copyBtn = document.getElementById('copyBtn');
+
+		let currentFileName = "input.gif";
+		let originalFps = 20;
+
+		function updateCommand() {
+			let targetFps = 10;
+			const mode = fpsMode.value;
+			if (mode === 'fps_10') targetFps = 10;
+			else if (mode === 'drop_2') targetFps = Math.max(1, Math.round(originalFps / 2));
+			else if (mode === 'drop_3') targetFps = Math.max(1, Math.round(originalFps / 3));
+			else if (mode === 'custom') targetFps = customFps.value || 10;
+
+			const width = widthInput.value.trim();
+			const outName = currentFileName.replace(/\.[^/.]+$/, "") + "_opt.gif";
+
+			let filters = [`fps=${targetFps}`];
+			if (width) filters.push(`scale=${width}:-1:flags=lanczos`);
+			
+			const filterStr = filters.join(',') + ",split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse";
+			commandOutput.innerText = `ffmpeg -i "${currentFileName}" -vf "${filterStr}" -y "${outName}"`;
+		}
+
+		async function parseGif(file) {
+			const buffer = await file.arrayBuffer();
+			const data = new Uint8Array(buffer);
+			if (data[0] !== 0x47 || data[1] !== 0x49 || data[2] !== 0x46) throw new Error("无效GIF");
+
+			let offset = 6;
+			const width = data[offset] | (data[offset+1] << 8);
+			const height = data[offset+2] | (data[offset+3] << 8);
+			const packed = data[offset+4];
+			offset += 7;
+			if (packed & 0x80) offset += 3 * (2 << (packed & 0x07));
+
+			let frameCount = 0, totalDelay = 0;
+			while (offset < data.length) {
+				const blockType = data[offset++];
+				if (blockType === 0x3B) break;
+				if (blockType === 0x21) {
+					const label = data[offset++];
+					if (label === 0xF9) {
+						const delay = data[offset+2] | (data[offset+3] << 8);
+						totalDelay += (delay === 0 ? 10 : delay);
+					}
+					let size = data[offset++];
+					while (size > 0) { offset += size; size = data[offset++]; }
+				} else if (blockType === 0x2C) {
+					frameCount++;
+					offset += 8;
+					const lPacked = data[offset++];
+					if (lPacked & 0x80) offset += 3 * (2 << (lPacked & 0x07));
+					offset++;
+					let size = data[offset++];
+					while (size > 0) { offset += size; size = data[offset++]; }
+				} else break;
+			}
+			const duration = totalDelay / 100;
+			return { width, height, frameCount, fps: Math.round(frameCount / duration) || 15 };
+		}
+
+		fileInput.addEventListener('change', async (e) => {
+			const file = e.target.files[0];
+			if (!file) return;
+
+			currentFileName = file.name;
+			infoPanel.style.display = 'block';
+			
+			try {
+				const info = await parseGif(file);
+				originalFps = info.fps;
+				document.getElementById('infoName').innerText = file.name;
+				document.getElementById('infoResolution').innerText = `${info.width} × ${info.height}`;
+				document.getElementById('infoFps').innerText = info.fps;
+				document.getElementById('infoFrames').innerText = info.frameCount;
+				updateCommand();
+			} catch (err) {
+				console.error("解析失败", err);
+			}
+		});
+
+		fpsMode.addEventListener('change', () => {
+			customFps.style.display = fpsMode.value === 'custom' ? 'block' : 'none';
+			updateCommand();
+		});
+
+		[widthInput, customFps].forEach(el => el.addEventListener('input', updateCommand));
+
+		copyBtn.addEventListener('click', async () => {
+			await navigator.clipboard.writeText(commandOutput.innerText);
+			const originalText = copyBtn.innerText;
+			copyBtn.innerText = "✅ 复制成功，去 CMD 运行吧";
+			copyBtn.classList.add('success');
+			setTimeout(() => {
+				copyBtn.innerText = originalText;
+				copyBtn.classList.remove('success');
+			}, 2000);
+		});
+	</script>
+</body>
+</html>

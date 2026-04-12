@@ -1,21 +1,26 @@
 ---
 import Button from "../ui/button/Button.astro";
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
 interface Cta {
   text: string;
   href: string;
 }
 
 interface Props {
-  title: string;
+  title?: string;
   subtitle?: string;
   showCTA?: boolean;
   primaryCTA?: Cta;
   secondaryCTA?: Cta;
 }
 
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
 const {
-  title,
-  subtitle,
+  title = t('hero.title'),
+  subtitle = t('hero.subtitle'),
   showCTA = false,
   primaryCTA,
   secondaryCTA
